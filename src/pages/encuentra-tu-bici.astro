@@ -1,0 +1,21 @@
+---
+import Quiz from '../components/Quiz';
+import Base from '../layouts/Base.astro';
+import { products } from '../lib/catalog';
+
+const bikes = products.filter((p) => p.category === 'bikes');
+---
+
+<Base title="Encuentra tu bici" description="Responde cuatro preguntas y te recomendamos la bicicleta y la talla que te sirven.">
+  <div class="hex-bg border-b border-carbon-700 bg-carbon-950">
+    <div class="wrapper py-12">
+      <h1 class="headline headline-l">Encuentra tu bici</h1>
+      <p class="mt-3 max-w-[36rem] text-lg text-fog">
+        Cuatro preguntas rápidas. Al final te mostramos las bicis del catálogo que van contigo y tu talla.
+      </p>
+    </div>
+  </div>
+  <div class="wrapper max-w-[60rem] pt-10">
+    <Quiz client:load bikes={bikes} />
+  </div>
+</Base>

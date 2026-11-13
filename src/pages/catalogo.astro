@@ -1,0 +1,19 @@
+---
+import Catalog from '../components/catalog/Catalog';
+import Base from '../layouts/Base.astro';
+import { products } from '../lib/catalog';
+---
+
+<Base title="Catálogo" description="Bicicletas, repuestos, accesorios y ropa. Filtra, arma tu pedido y envíalo por WhatsApp.">
+  <div class="hex-bg border-b border-carbon-700 bg-carbon-950">
+    <div class="wrapper py-12">
+      <h1 class="headline headline-l">Catálogo</h1>
+      <p class="mt-3 max-w-[36rem] text-lg text-fog">
+        Agrega lo que necesitas a tu pedido y envíalo por WhatsApp. Ahí confirmamos disponibilidad y entrega.
+      </p>
+    </div>
+  </div>
+  <div class="wrapper pt-8">
+    <Catalog client:load products={products} />
+  </div>
+</Base>

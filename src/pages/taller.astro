@@ -1,0 +1,42 @@
+---
+import WorkshopForm from '../components/WorkshopForm';
+import Base from '../layouts/Base.astro';
+import { services } from '../lib/catalog';
+import { formatPrice } from '../lib/price';
+---
+
+<Base title="Taller" description="Ajuste, mantenimiento, purga de frenos y armado de bicicletas. Pide tu cita por WhatsApp.">
+  <div class="hex-bg border-b border-carbon-700 bg-carbon-950">
+    <div class="wrapper py-12">
+      <h1 class="headline headline-l">Taller</h1>
+      <p class="mt-3 max-w-[36rem] text-lg text-fog">
+        Elige el servicio, dinos qué día te sirve y te confirmamos la hora por WhatsApp.
+      </p>
+    </div>
+  </div>
+
+  <div class="wrapper grid gap-10 pt-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+    <section aria-labelledby="services-title">
+      <h2 id="services-title" class="headline headline-m">Servicios y precios</h2>
+      <ul class="mt-4 divide-y divide-carbon-700 border-y border-carbon-700">
+        {
+          services.map((s) => (
+            <li class="flex items-baseline justify-between gap-6 py-4">
+              <div>
+                <p class="text-lg font-semibold">{s.name}</p>
+                <p class="text-fog">{s.description}</p>
+                <p class="text-sm text-fog">Tiempo aproximado: {s.duration}</p>
+              </div>
+              <p class="headline shrink-0 text-2xl">{formatPrice(s.price)}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-4 text-fog">
+        Los precios son de mano de obra. Si hay que cambiar algún repuesto, te avisamos antes de ponerlo.
+      </p>
+    </section>
+
+    <WorkshopForm client:load services={services} />
+  </div>
+</Base>

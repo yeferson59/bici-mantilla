@@ -1,0 +1,395 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Saira Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-carbon-950: #111112;
+  --color-carbon-900: #19191b;
+  --color-carbon-800: #232325;
+  --color-carbon-700: #303033;
+  --color-carbon-600: #48484c;
+  --color-fog: #b0b0b5;
+  --color-chalk: #f4f4f0;
+  --color-yellow: #ffe600;
+  --color-red: #e2222c;
+}
+
+:root {
+  --header-height: 4rem;
+  --cut: 1.1rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-height) + 1rem);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-carbon-900);
+    color: var(--color-chalk);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-yellow);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--color-yellow);
+    color: var(--color-carbon-950);
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .wrapper {
+    width: min(100% - 2.5rem, 76rem);
+    margin-inline: auto;
+  }
+
+  /* Headlines: the same condensed, angular italic as the business card logo. */
+  .headline {
+    font-style: italic;
+    font-weight: 800;
+    font-stretch: 62%;
+    text-transform: uppercase;
+    line-height: 0.9;
+    text-wrap: balance;
+  }
+  .headline-xl {
+    font-size: clamp(3.4rem, 9.5vw, 8rem);
+  }
+  .headline-l {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+  }
+  .headline-m {
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 0.95;
+  }
+
+  .hex-bg {
+    background-image: url("/hexagons.svg");
+    background-size: 600px 520px;
+  }
+
+  /* Parallelogram buttons, with the logo's slant. */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    min-height: 3rem;
+    padding: 0.65rem 1.7rem;
+    font-style: italic;
+    font-weight: 700;
+    font-stretch: 82%;
+    font-size: 1.08rem;
+    line-height: 1.15;
+    text-align: center;
+    background: var(--color-yellow);
+    color: var(--color-carbon-950);
+    clip-path: polygon(0.8rem 0, 100% 0, calc(100% - 0.8rem) 100%, 0 100%);
+    transition: background-color 0.15s;
+  }
+  .button:hover {
+    background: #fff;
+  }
+  .button:focus-visible {
+    outline: 3px solid var(--color-carbon-950);
+    outline-offset: -7px;
+  }
+  .button:disabled {
+    background: var(--color-carbon-700);
+    color: var(--color-fog);
+  }
+  .button-dark {
+    background: var(--color-carbon-700);
+    color: var(--color-chalk);
+  }
+  .button-dark:hover {
+    background: var(--color-carbon-600);
+  }
+  .button-dark:focus-visible {
+    outline-color: var(--color-yellow);
+  }
+  .button-sm {
+    min-height: 2.5rem;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.98rem;
+  }
+
+  .link {
+    color: var(--color-yellow);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+  .link:hover {
+    color: #fff;
+  }
+
+  /* Red / white / yellow stripe from the business card. */
+  .stripe {
+    display: flex;
+    gap: 0.3rem;
+    height: 0.55rem;
+  }
+  .stripe > i {
+    display: block;
+    transform: skewX(-24deg);
+  }
+  .stripe > i:nth-child(1) {
+    width: 2.4rem;
+    background: var(--color-red);
+  }
+  .stripe > i:nth-child(2) {
+    width: 1rem;
+    background: var(--color-chalk);
+  }
+  .stripe > i:nth-child(3) {
+    width: 5.5rem;
+    background: var(--color-yellow);
+  }
+
+  /* Plate with a cut corner: product cards, panels, forms. */
+  .plate {
+    background: var(--color-carbon-800);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%);
+  }
+
+  .field {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.6rem 0.85rem;
+    background: var(--color-carbon-950);
+    color: var(--color-chalk);
+    border: 1px solid var(--color-carbon-600);
+    font: inherit;
+    color-scheme: dark;
+  }
+  .field::placeholder {
+    color: #8a8a90;
+  }
+  .field:focus-visible {
+    outline: none;
+    border-color: var(--color-yellow);
+    box-shadow: 0 0 0 1px var(--color-yellow);
+  }
+  .field-label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.35rem 1.05rem;
+    font-weight: 600;
+    font-stretch: 88%;
+    background: var(--color-carbon-800);
+    color: var(--color-chalk);
+    border: 1px solid transparent;
+    transition: background-color 0.15s;
+  }
+  .chip:hover {
+    background: var(--color-carbon-700);
+  }
+  .chip[aria-pressed="true"],
+  .chip[aria-checked="true"] {
+    background: var(--color-yellow);
+    color: var(--color-carbon-950);
+  }
+}
+
+/* ───────── Hero ───────── */
+.hero {
+  position: relative;
+}
+.hero-sticky {
+  position: relative;
+  min-height: calc(100svh - var(--header-height));
+  overflow: hidden;
+}
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hero-text {
+  position: relative;
+  display: grid;
+  padding-top: clamp(1.5rem, 5svh, 3rem);
+  padding-bottom: 6rem;
+}
+.hero-text > .act {
+  grid-area: 1 / 1;
+  max-width: 34rem;
+}
+/* Without the 3D animation (no JS or reduced motion): a single block of text. */
+.hero:not(.hero--active) .act[data-act="2"],
+.hero:not(.hero--active) .animated-only {
+  display: none;
+}
+.hero:not(.hero--active) .act[data-act="3"] {
+  grid-area: 2 / 1;
+  margin-top: 1.75rem;
+}
+.hero--active {
+  height: 460svh;
+}
+.hero--active .hero-sticky {
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100svh - var(--header-height));
+}
+.hero--active .act {
+  will-change: opacity, transform;
+}
+.hero--active .act[data-act="2"],
+.hero--active .act[data-act="3"] {
+  opacity: 0;
+  visibility: hidden;
+}
+.hero-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.5rem;
+  display: none;
+  gap: 0.4rem;
+}
+.hero--active .hero-progress {
+  display: flex;
+}
+.hero-progress > span {
+  height: 0.4rem;
+  background: var(--color-carbon-700);
+  transform: skewX(-24deg);
+  overflow: hidden;
+}
+.hero-progress > span > i {
+  display: block;
+  height: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+}
+.hero-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3rem;
+  display: none;
+}
+.hero--active .hero-hint {
+  display: block;
+}
+@media (min-width: 60rem) and (min-aspect-ratio: 6/5) {
+  .hero-text {
+    height: 100%;
+    align-content: center;
+    padding-top: 0;
+    padding-bottom: 5rem;
+  }
+  .hero-text > .act {
+    max-width: 30rem;
+  }
+}
+
+/* ───────── Explorable bike ───────── */
+.bike-stroke {
+  fill: none;
+  stroke: var(--color-chalk);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.bike-zone {
+  fill: none;
+  stroke: #9d9da3;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.2s;
+}
+.bike-zone.active {
+  stroke: var(--color-yellow);
+}
+.hotspot {
+  position: absolute;
+  width: 2.75rem;
+  height: 2.75rem;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+.hotspot::before {
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--color-yellow);
+  box-shadow: 0 0 0 4px rgb(17 17 18 / 0.85);
+  transition: transform 0.15s;
+}
+.hotspot::after {
+  content: "";
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-yellow);
+  animation: hotspot-pulse 2.4s ease-out infinite;
+}
+.hotspot:hover::before,
+.hotspot[aria-pressed="true"]::before {
+  transform: scale(1.35);
+}
+.hotspot[aria-pressed="true"]::before {
+  background: var(--color-chalk);
+}
+.hotspot[aria-pressed="true"]::after {
+  animation: none;
+  opacity: 0;
+}
+@keyframes hotspot-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* ───────── Cart ───────── */
+.drawer {
+  transition: transform 0.25s ease-out;
+}
+.drawer-backdrop {
+  transition: opacity 0.25s;
+}

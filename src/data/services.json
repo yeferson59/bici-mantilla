@@ -1,0 +1,44 @@
+[
+  {
+    "id": "ajuste-basico",
+    "name": "Ajuste básico",
+    "price": 35000,
+    "duration": "1 hora",
+    "description": "Frenos, cambios, presión de llantas y lubricación de cadena."
+  },
+  {
+    "id": "mantenimiento-general",
+    "name": "Mantenimiento general",
+    "price": 90000,
+    "duration": "1 día",
+    "description": "Desarme, lavado, engrase de rodamientos y ajuste completo."
+  },
+  {
+    "id": "mantenimiento-suspension",
+    "name": "Mantenimiento de suspensión",
+    "price": 140000,
+    "duration": "2 días",
+    "description": "Cambio de aceite y retenes, limpieza interna y calibración."
+  },
+  {
+    "id": "purga-frenos",
+    "name": "Purga de frenos hidráulicos",
+    "price": 50000,
+    "duration": "1 hora",
+    "description": "Cambio de líquido y sangrado de los dos frenos."
+  },
+  {
+    "id": "centrado-ruedas",
+    "name": "Centrado de rueda",
+    "price": 25000,
+    "duration": "40 minutos",
+    "description": "Tensión de radios y alineación del rin. Precio por rueda."
+  },
+  {
+    "id": "armado-bici-nueva",
+    "name": "Armado de bicicleta nueva",
+    "price": 60000,
+    "duration": "2 horas",
+    "description": "La sacamos de la caja, la armamos y la entregamos ajustada a tu medida."
+  }
+]

@@ -1,0 +1,181 @@
+---
+import '@fontsource-variable/saira/wdth.css';
+import '@fontsource-variable/saira/wdth-italic.css';
+import '../styles/global.css';
+import Cart from '../components/cart/Cart';
+import { shop } from '../config/shop';
+import { products } from '../lib/catalog';
+import { whatsAppLink } from '../lib/whatsapp';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = shop.description } = Astro.props;
+const fullTitle = title ? `${title} | ${shop.name}` : `${shop.name}: bicicletas, repuestos y taller`;
+
+const menu = [
+  { href: '/catalogo', label: 'Catálogo' },
+  { href: '/taller', label: 'Taller' },
+  { href: '/encuentra-tu-bici', label: 'Encuentra tu bici' },
+];
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const summaries = products.map(({ id, name, price, icon }) => ({ id, name, price, icon }));
+const greetingLink = whatsAppLink(`Hola ${shop.name}, vengo de la página web.`);
+
+const businessData = {
+  '@context': 'https://schema.org',
+  '@type': 'BikeStore',
+  name: shop.name,
+  description: shop.description,
+  telephone: `+${shop.whatsapp}`,
+  ...(shop.address && {
+    address: { '@type': 'PostalAddress', streetAddress: shop.address, addressLocality: shop.city ?? undefined, addressCountry: 'CO' },
+  }),
+  sameAs: shop.socials.flatMap((s) => (s.url ? [s.url] : [])),
+};
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111112" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <script type="application/ld+json" set:html={JSON.stringify(businessData)} />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a href="#content" class="button sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60]">
+      Saltar al contenido
+    </a>
+
+    <header class="sticky top-0 z-40 h-[var(--header-height)] border-b border-carbon-700 bg-carbon-950">
+      <div class="wrapper flex h-full items-center justify-between gap-4">
+        <a href="/" class="flex items-baseline gap-2" aria-label={`${shop.name}, ir al inicio`}>
+          <span class="headline hidden text-base sm:inline">Bicicletería</span>
+          <span class="headline text-[2rem] text-yellow">Mantilla</span>
+        </a>
+
+        <nav
+          id="menu"
+          aria-label="Principal"
+          class="absolute inset-x-0 top-full hidden border-b border-carbon-700 bg-carbon-950 px-5 py-3 md:static md:block md:border-0 md:p-0"
+        >
+          <ul class="flex flex-col md:flex-row md:gap-7">
+            {
+              menu.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    aria-current={path.startsWith(item.href) ? 'page' : undefined}
+                    class="flex min-h-11 items-center font-semibold hover:text-yellow aria-[current]:text-yellow"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+
+        <div class="flex items-center gap-1">
+          <Cart client:load products={summaries} />
+          <button id="menu-button" type="button" class="min-h-11 px-2 font-semibold hover:text-yellow md:hidden" aria-expanded="false" aria-controls="menu">
+            Menú
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="content" class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="hex-bg mt-24 border-t border-carbon-700 bg-carbon-950">
+      <div class="wrapper grid gap-10 py-12 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div>
+          <p class="headline text-lg">Bicicletería</p>
+          <p class="headline text-5xl text-yellow">Mantilla</p>
+          <span class="stripe mt-4"><i></i><i></i><i></i></span>
+          <p class="mt-5 max-w-[24rem] text-fog">{shop.description}</p>
+        </div>
+
+        <div>
+          <h2 class="font-semibold">Contacto</h2>
+          <ul class="mt-3 grid gap-2 text-fog">
+            <li>
+              <a href={greetingLink} target="_blank" rel="noopener" class="link">WhatsApp {shop.displayPhone}</a>
+            </li>
+            {
+              shop.socials.map((s) => (
+                <li>
+                  {s.network}:{' '}
+                  {s.url ? (
+                    <a href={s.url} target="_blank" rel="noopener" class="link">
+                      {s.name}
+                    </a>
+                  ) : (
+                    s.name
+                  )}
+                </li>
+              ))
+            }
+            {shop.address && <li>{[shop.address, shop.city].filter(Boolean).join(', ')}</li>}
+            {shop.openingHours.map((h) => <li>{h.days}: {h.hours}</li>)}
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="font-semibold">La tienda</h2>
+          <ul class="mt-3 grid gap-2">
+            {menu.map((item) => <li><a href={item.href} class="text-fog hover:text-yellow">{item.label}</a></li>)}
+          </ul>
+        </div>
+      </div>
+      {
+        shop.sampleCatalog && (
+          <p class="wrapper border-t border-carbon-700 py-4 text-sm text-fog">
+            Catálogo de muestra: los productos, marcas y precios de esta página son ejemplos.
+          </p>
+        )
+      }
+    </footer>
+
+    <a
+      href={greetingLink}
+      target="_blank"
+      rel="noopener"
+      aria-label="Escribir a la tienda por WhatsApp"
+      class="fixed bottom-4 right-4 z-30 grid size-14 place-items-center rounded-full bg-yellow text-carbon-950 hover:bg-white"
+    >
+      <svg viewBox="0 0 24 24" class="size-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20l1.3-4.1A8 8 0 1 1 8.2 18.8L4 20z"></path>
+        <path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.6-1.9-1-0.8 0.8c-0.9-0.4-1.6-1.1-2-2l0.8-0.8-1-1.9L9 9.5z"></path>
+      </svg>
+    </a>
+
+    <script>
+      const button = document.getElementById('menu-button');
+      const menu = document.getElementById('menu');
+      button?.addEventListener('click', () => {
+        const open = menu?.classList.toggle('hidden') === false;
+        button.setAttribute('aria-expanded', String(open));
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape' || button?.getAttribute('aria-expanded') !== 'true') return;
+        menu?.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+        button.focus();
+      });
+    </script>
+  </body>
+</html>

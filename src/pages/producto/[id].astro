@@ -1,0 +1,81 @@
+---
+import ProductPurchase from '../../components/catalog/ProductPurchase';
+import ProductGrid from '../../components/catalog/ProductGrid';
+import Illustration from '../../components/Illustration';
+import Base from '../../layouts/Base.astro';
+import { products } from '../../lib/catalog';
+import { formatPrice } from '../../lib/price';
+import { CATEGORY_NAME, ZONE_NAME, type Product } from '../../lib/types';
+
+export function getStaticPaths() {
+  return products.map((product) => ({ params: { id: product.id }, props: { product } }));
+}
+
+interface Props {
+  product: Product;
+}
+const { product } = Astro.props;
+
+const useName = { city: 'Ciudad', mountain: 'Montaña', road: 'Ruta', kids: 'Niños' };
+const levelName = { beginner: 'Para empezar', intermediate: 'Intermedio', advanced: 'Avanzado' };
+const specs = [
+  { term: 'Marca', value: product.brand },
+  product.uses && { term: 'Uso', value: product.uses.map((u) => useName[u]).join(' y ') },
+  product.level && { term: 'Nivel', value: levelName[product.level] },
+  product.zone && { term: 'Parte de la bici', value: ZONE_NAME[product.zone] },
+].filter((d) => !!d);
+
+const related = products
+  .filter((p) => p.id !== product.id && p.category === product.category)
+  .sort((a, b) => Number(b.zone === product.zone) - Number(a.zone === product.zone))
+  .slice(0, 4);
+---
+
+<Base title={product.name} description={product.description}>
+  <div class="wrapper pt-8">
+    <nav aria-label="Ruta" class="text-fog">
+      <a href="/catalogo" class="hover:text-yellow">Catálogo</a>
+      <span aria-hidden="true"> / </span>
+      <a href={`/catalogo?category=${product.category}`} class="hover:text-yellow">{CATEGORY_NAME[product.category]}</a>
+    </nav>
+
+    <div class="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-14">
+      <div class="plate hex-bg relative grid aspect-[4/3] place-items-center bg-carbon-950 [--cut:2rem]">
+        {product.featured && <span class="stripe absolute left-6 top-6"><i></i><i></i><i></i></span>}
+        <Illustration icon={product.icon} className="w-1/2" />
+      </div>
+
+      <div>
+        <h1 class="headline headline-l">{product.name}</h1>
+        <p class="headline mt-4 text-5xl text-yellow">{formatPrice(product.price)}</p>
+        <p class="mt-5 max-w-[34rem] text-lg text-fog">{product.description}</p>
+
+        <dl class="mt-6 grid max-w-[30rem] grid-cols-[auto_1fr] gap-x-6 gap-y-1 border-y border-carbon-700 py-4">
+          {
+            specs.map((d) => (
+              <>
+                <dt class="text-fog">{d.term}</dt>
+                <dd class="font-semibold">{d.value}</dd>
+              </>
+            ))
+          }
+        </dl>
+
+        <div class="mt-6">
+          <ProductPurchase client:load product={product} />
+        </div>
+      </div>
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="pt-20" aria-labelledby="related-title">
+          <h2 id="related-title" class="headline headline-m">Más en {CATEGORY_NAME[product.category].toLowerCase()}</h2>
+          <div class="mt-6">
+            <ProductGrid client:visible products={related} />
+          </div>
+        </section>
+      )
+    }
+  </div>
+</Base>

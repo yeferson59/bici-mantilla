@@ -1,0 +1,138 @@
+---
+import ExplorableBike from '../components/ExplorableBike';
+import ProductGrid from '../components/catalog/ProductGrid';
+import Hero from '../components/hero/Hero';
+import Illustration from '../components/Illustration';
+import { shop } from '../config/shop';
+import Base from '../layouts/Base.astro';
+import { products, services } from '../lib/catalog';
+import { formatPrice } from '../lib/price';
+import { CATEGORIES, CATEGORY_NAME, type Category, type Icon } from '../lib/types';
+import { whatsAppLink } from '../lib/whatsapp';
+
+const categoryIcon: Record<Category, Icon> = {
+  bikes: 'bike',
+  parts: 'cassette',
+  accessories: 'light',
+  apparel: 'helmet',
+};
+const categories = CATEGORIES.map((c) => ({
+  id: c,
+  name: CATEGORY_NAME[c],
+  icon: categoryIcon[c],
+  count: products.filter((p) => p.category === c).length,
+}));
+const featured = products.filter((p) => p.featured);
+const withZone = products.filter((p) => p.zone);
+const mainServices = services.slice(0, 3);
+const greetingLink = whatsAppLink(`Hola ${shop.name}, vengo de la página web.`);
+---
+
+<Base>
+  <Hero client:load />
+
+  <section class="wrapper pt-20" aria-labelledby="categories-title">
+    <h2 id="categories-title" class="headline headline-l">Lo que hay en la tienda</h2>
+    <ul class="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {
+        categories.map((c) => (
+          <li>
+            <a href={`/catalogo?category=${c.id}`} class="plate group flex h-full flex-col p-5 pb-7 hover:bg-carbon-700">
+              <Illustration icon={c.icon} className="size-16 sm:size-20" />
+              <span class="headline headline-m mt-6 group-hover:text-yellow">{c.name}</span>
+              <span class="mt-1 text-fog">{c.count} productos</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrapper pt-24" aria-labelledby="featured-title">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <h2 id="featured-title" class="headline headline-l">Destacados</h2>
+      <a href="/catalogo" class="link">Ver todo el catálogo</a>
+    </div>
+    <div class="mt-8">
+      <ProductGrid client:visible products={featured} />
+    </div>
+  </section>
+
+  <section class="wrapper pt-24" aria-labelledby="explorable-title">
+    <h2 id="explorable-title" class="headline headline-l">Toca la bici, encuentra el repuesto</h2>
+    <p class="mt-4 max-w-[38rem] text-lg text-fog">
+      Cada punto amarillo es una parte de la bicicleta. Tócalo y mira los repuestos y accesorios que van ahí.
+    </p>
+    <div class="mt-10">
+      <ExplorableBike client:visible products={withZone} />
+    </div>
+  </section>
+
+  <section class="hex-bg mt-24 bg-yellow text-carbon-950" aria-labelledby="quiz-title">
+    <div class="wrapper flex flex-wrap items-center justify-between gap-8 py-14">
+      <div>
+        <h2 id="quiz-title" class="headline headline-l">¿No sabes cuál es la tuya?</h2>
+        <p class="mt-3 max-w-[34rem] text-lg font-medium">
+          Responde cuatro preguntas y te decimos qué bici buscar y en qué talla.
+        </p>
+      </div>
+      <a href="/encuentra-tu-bici" class="button bg-carbon-950 text-chalk hover:bg-carbon-700 focus-visible:outline-yellow">
+        Encuentra tu bici
+      </a>
+    </div>
+  </section>
+
+  <section class="wrapper grid gap-10 pt-24 lg:grid-cols-[1fr_1.2fr] lg:gap-16" aria-labelledby="workshop-title">
+    <div>
+      <h2 id="workshop-title" class="headline headline-l">Taller</h2>
+      <p class="mt-4 max-w-[30rem] text-lg text-fog">
+        Ajustes, mantenimiento y armado. Pide la cita desde aquí y llega con la bici a la hora acordada.
+      </p>
+      <a href="/taller" class="button mt-7">Pedir cita en el taller</a>
+    </div>
+    <ul class="divide-y divide-carbon-700 border-y border-carbon-700">
+      {
+        mainServices.map((s) => (
+          <li class="flex items-baseline justify-between gap-6 py-4">
+            <div>
+              <p class="text-lg font-semibold">{s.name}</p>
+              <p class="text-fog">{s.description}</p>
+            </div>
+            <p class="headline shrink-0 text-2xl">{formatPrice(s.price)}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrapper pt-24" aria-labelledby="contact-title">
+    <h2 id="contact-title" class="headline headline-l">Escríbenos</h2>
+    <p class="mt-4 max-w-[34rem] text-lg text-fog">
+      Para pedidos, repuestos que no ves en el catálogo o cualquier duda sobre tu bici.
+    </p>
+    <div class="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
+      <a href={greetingLink} target="_blank" rel="noopener" class="button">Escribir por WhatsApp</a>
+      <p class="headline text-3xl">{shop.displayPhone}</p>
+    </div>
+    {
+      shop.address && (
+        <p class="mt-6 text-lg">
+          {[shop.address, shop.city].filter(Boolean).join(', ')}
+          {shop.mapUrl && (
+            <>
+              {' '}
+              <a href={shop.mapUrl} target="_blank" rel="noopener" class="link">Cómo llegar</a>
+            </>
+          )}
+        </p>
+      )
+    }
+    {
+      shop.openingHours.length > 0 && (
+        <ul class="mt-3 text-fog">
+          {shop.openingHours.map((h) => <li>{h.days}: {h.hours}</li>)}
+        </ul>
+      )
+    }
+  </section>
+</Base>
