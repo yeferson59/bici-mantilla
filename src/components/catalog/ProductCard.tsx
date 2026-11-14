@@ -32,10 +32,10 @@ export default function ProductCard({ product, note }: { product: Product; note?
         aria-hidden="true"
         onPointerMove={tilt}
         onPointerLeave={straighten}
-        class="hex-bg relative grid aspect-[4/3] place-items-center bg-carbon-950 [perspective:600px]"
+        class="hex-spot relative grid aspect-[4/3] place-items-center bg-carbon-950 [perspective:600px]"
       >
         {product.featured && (
-          <span class="stripe absolute left-4 top-4">
+          <span class="stripe absolute left-3 top-3 origin-top-left scale-75 sm:left-4 sm:top-4 sm:scale-100">
             <i />
             <i />
             <i />
@@ -47,7 +47,7 @@ export default function ProductCard({ product, note }: { product: Product; note?
         />
       </a>
 
-      <div class="flex flex-1 flex-col p-4 pb-5">
+      <div class="flex flex-1 flex-col p-3 pb-4 sm:p-4 sm:pb-5">
         <p class="text-sm text-fog">{product.brand}</p>
         <h3 class="mt-0.5 font-semibold leading-snug">
           <a href={href} class="hover:text-yellow">
@@ -57,7 +57,7 @@ export default function ProductCard({ product, note }: { product: Product; note?
         {note && <p class="mt-2 text-sm text-fog">{note}</p>}
 
         <div class="mt-auto flex flex-wrap items-end justify-between gap-x-3 gap-y-2 pt-4">
-          <p class="headline text-[1.7rem]">{formatPrice(product.price)}</p>
+          <p class="headline text-[1.45rem] sm:text-[1.7rem]">{formatPrice(product.price)}</p>
           {mustChooseSize ? (
             <a href={href} class="button button-sm button-dark mr-3">
               Elegir talla

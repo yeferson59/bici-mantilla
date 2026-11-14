@@ -90,6 +90,14 @@
     background-image: url("/hexagons.svg");
     background-size: 600px 520px;
   }
+  /* A single hexagon centered behind a product illustration. The repeating pattern
+     doesn't fit small boxes: it leaves cut hexagons stuck to the edges. */
+  .hex-spot {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 86.6'%3E%3Cpolygon fill='%23fff' fill-opacity='.05' points='100,43.3 75,86.6 25,86.6 0,43.3 25,0 75,0'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 80%;
+  }
 
   /* Parallelogram buttons, with the logo's slant. */
   .button {

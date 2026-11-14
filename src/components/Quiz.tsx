@@ -202,7 +202,7 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
             {result.anyFits ? 'Estas son para ti' : 'Ninguna entra en ese presupuesto'}
           </h2>
           {!result.anyFits && <p class="mt-2 text-fog">Estas son las que más se acercan.</p>}
-          <ul class="mt-5 grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-5 [--color-carbon-800:var(--color-carbon-700)]">
+          <ul class="mt-5 grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-5 [--color-carbon-800:var(--color-carbon-900)]">
             {result.list.map((b) => (
               <li key={b.id}>
                 <ProductCard

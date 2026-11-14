@@ -151,7 +151,7 @@ export default function Catalog({ products }: { products: Product[] }) {
 
       <h2 class="sr-only">Productos</h2>
       {visible.length ? (
-        <ul class="mt-5 grid grid-cols-[repeat(auto-fill,minmax(15.5rem,1fr))] gap-5">
+        <ul class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fill,minmax(15.5rem,1fr))] sm:gap-5">
           {visible.map((p) => (
             <li key={p.id}>
               <ProductCard product={p} />
