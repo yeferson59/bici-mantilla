@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 import { formatPrice } from '../../lib/price';
 import { CATEGORIES, CATEGORY_NAME, ZONE_NAME, ZONES, type Category, type Product, type Zone } from '../../lib/types';
 import ProductCard from './ProductCard';
@@ -70,36 +70,36 @@ export default function Catalog({ products }: { products: Product[] }) {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Categoría">
-        <button type="button" className="chip" aria-pressed={!category} onClick={() => setCategory(null)}>
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Categoría">
+        <button type="button" class="chip" aria-pressed={!category} onClick={() => setCategory(null)}>
           Todo
         </button>
         {CATEGORIES.map((c) => (
-          <button key={c} type="button" className="chip" aria-pressed={category === c} onClick={() => setCategory(c)}>
+          <button key={c} type="button" class="chip" aria-pressed={category === c} onClick={() => setCategory(c)}>
             {CATEGORY_NAME[c]}
           </button>
         ))}
       </div>
 
-      <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <label className="field-label" htmlFor="filter-search">
+          <label class="field-label" for="filter-search">
             Buscar
           </label>
           <input
             id="filter-search"
             type="search"
-            className="field"
+            class="field"
             placeholder="Cadena, casco, rin 29…"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onInput={(e) => setSearch(e.currentTarget.value)}
           />
         </div>
         <div>
-          <label className="field-label" htmlFor="filter-brand">
+          <label class="field-label" for="filter-brand">
             Marca
           </label>
-          <select id="filter-brand" className="field" value={brand} onChange={(e) => setBrand(e.target.value)}>
+          <select id="filter-brand" class="field" value={brand} onChange={(e) => setBrand(e.currentTarget.value)}>
             <option value="">Todas</option>
             {brands.map((m) => (
               <option key={m}>{m}</option>
@@ -107,25 +107,25 @@ export default function Catalog({ products }: { products: Product[] }) {
           </select>
         </div>
         <div>
-          <label className="field-label" htmlFor="filter-price">
-            Precio hasta <span className="text-yellow">{formatPrice(priceLimit)}</span>
+          <label class="field-label" for="filter-price">
+            Precio hasta <span class="text-yellow">{formatPrice(priceLimit)}</span>
           </label>
           <input
             id="filter-price"
             type="range"
-            className="mt-3 w-full accent-yellow"
+            class="mt-3 w-full accent-yellow"
             min={50000}
             max={maxPrice}
             step={50000}
             value={priceLimit}
-            onChange={(e) => setPriceLimit(Number(e.target.value))}
+            onInput={(e) => setPriceLimit(Number(e.currentTarget.value))}
           />
         </div>
         <div>
-          <label className="field-label" htmlFor="filter-sort">
+          <label class="field-label" for="filter-sort">
             Ordenar
           </label>
-          <select id="filter-sort" className="field" value={sortOrder} onChange={(e) => setSortOrder(e.target.value as SortOrder)}>
+          <select id="filter-sort" class="field" value={sortOrder} onChange={(e) => setSortOrder(e.currentTarget.value as SortOrder)}>
             <option value="featured">Destacados primero</option>
             <option value="lowest">Menor precio</option>
             <option value="highest">Mayor precio</option>
@@ -133,25 +133,25 @@ export default function Catalog({ products }: { products: Product[] }) {
         </div>
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-fog" aria-live="polite">
+      <div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-fog" aria-live="polite">
         <p>
           {visible.length} {visible.length === 1 ? 'producto' : 'productos'}
         </p>
         {zone && (
-          <button type="button" className="chip min-h-9 py-0 text-sm" aria-pressed="true" onClick={() => setZone(null)}>
-            {ZONE_NAME[zone]} ✕<span className="sr-only"> (quitar este filtro)</span>
+          <button type="button" class="chip min-h-9 py-0 text-sm" aria-pressed="true" onClick={() => setZone(null)}>
+            {ZONE_NAME[zone]} ✕<span class="sr-only"> (quitar este filtro)</span>
           </button>
         )}
         {hasFilters && (
-          <button type="button" className="link" onClick={clearFilters}>
+          <button type="button" class="link" onClick={clearFilters}>
             Quitar filtros
           </button>
         )}
       </div>
 
-      <h2 className="sr-only">Productos</h2>
+      <h2 class="sr-only">Productos</h2>
       {visible.length ? (
-        <ul className="mt-5 grid grid-cols-[repeat(auto-fill,minmax(15.5rem,1fr))] gap-5">
+        <ul class="mt-5 grid grid-cols-[repeat(auto-fill,minmax(15.5rem,1fr))] gap-5">
           {visible.map((p) => (
             <li key={p.id}>
               <ProductCard product={p} />
@@ -159,10 +159,10 @@ export default function Catalog({ products }: { products: Product[] }) {
           ))}
         </ul>
       ) : (
-        <div className="plate mt-5 p-8">
-          <p className="headline headline-m">Ningún producto coincide con esos filtros.</p>
-          <p className="mt-3 text-fog">Prueba con otra palabra o sube el precio máximo.</p>
-          <button type="button" className="button mt-5" onClick={clearFilters}>
+        <div class="plate mt-5 p-8">
+          <p class="headline headline-m">Ningún producto coincide con esos filtros.</p>
+          <p class="mt-3 text-fog">Prueba con otra palabra o sube el precio máximo.</p>
+          <button type="button" class="button mt-5" onClick={clearFilters}>
             Quitar filtros
           </button>
         </div>

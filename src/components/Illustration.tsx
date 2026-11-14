@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ComponentChildren } from 'preact';
 import type { Icon } from '../lib/types';
 
 /**
@@ -7,7 +7,7 @@ import type { Icon } from '../lib/types';
  */
 const A = { stroke: 'var(--color-yellow)' };
 
-const DRAWINGS: Record<Icon, ReactNode> = {
+const DRAWINGS: Record<Icon, ComponentChildren> = {
   bike: (
     <>
       <circle cx="14" cy="42" r="11" />
@@ -34,7 +34,7 @@ const DRAWINGS: Record<Icon, ReactNode> = {
     <>
       <circle cx="30" cy="34" r="21" />
       <circle cx="30" cy="34" r="7" />
-      <path d="M30 18V22M30 46V50M14 34H18M42 34H46M19 23 22 26M38 42 41 45M41 23 38 26M22 42 19 45" strokeWidth="2" />
+      <path d="M30 18V22M30 46V50M14 34H18M42 34H46M19 23 22 26M38 42 41 45M41 23 38 26M22 42 19 45" stroke-width="2" />
       <rect x="40" y="8" width="16" height="13" rx="2" transform="rotate(28 48 14)" {...A} />
     </>
   ),
@@ -42,7 +42,7 @@ const DRAWINGS: Record<Icon, ReactNode> = {
     <>
       <circle cx="32" cy="32" r="24" />
       <circle cx="32" cy="32" r="16" {...A} />
-      <path d="M32 4V9M32 55V60M4 32H9M55 32H60M12 12 16 16M48 48 52 52M52 12 48 16M16 48 12 52" strokeWidth="2" />
+      <path d="M32 4V9M32 55V60M4 32H9M55 32H60M12 12 16 16M48 48 52 52M52 12 48 16M16 48 12 52" stroke-width="2" />
     </>
   ),
   saddle: (
@@ -54,7 +54,7 @@ const DRAWINGS: Record<Icon, ReactNode> = {
   handlebar: (
     <>
       <path d="M6 30H58" />
-      <path d="M6 30H18M46 30H58" strokeWidth="7" {...A} />
+      <path d="M6 30H18M46 30H58" stroke-width="7" {...A} />
       <path d="M32 30V46M26 46H38" />
     </>
   ),
@@ -91,14 +91,14 @@ const DRAWINGS: Record<Icon, ReactNode> = {
     <>
       <path d="M16 10V46H38" />
       <path d="M28 10V34H50" {...A} />
-      <path d="M12 54H52" strokeWidth="2" />
+      <path d="M12 54H52" stroke-width="2" />
     </>
   ),
   helmet: (
     <>
       <path d="M8 38Q10 14 32 13Q54 13 56 36L46 39Q30 33 8 38Z" />
-      <path d="M22 20 18 33M32 17V32M42 20 45 34" strokeWidth="2" {...A} />
-      <path d="M18 37 26 52H36L42 38" strokeWidth="2" />
+      <path d="M22 20 18 33M32 17V32M42 20 45 34" stroke-width="2" {...A} />
+      <path d="M18 37 26 52H36L42 38" stroke-width="2" />
     </>
   ),
   gloves: (
@@ -110,7 +110,7 @@ const DRAWINGS: Record<Icon, ReactNode> = {
   jersey: (
     <>
       <path d="M22 10 8 18 14 30 20 26V54H44V26L50 30 56 18 42 10Q32 18 22 10Z" />
-      <path d="M32 16V54" strokeWidth="2" {...A} />
+      <path d="M32 16V54" stroke-width="2" {...A} />
     </>
   ),
   shorts: (
@@ -125,12 +125,12 @@ export default function Illustration({ icon, className }: { icon: Icon; classNam
   return (
     <svg
       viewBox="0 0 64 64"
-      className={className}
+      class={className}
       fill="none"
       stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
       aria-hidden="true"
     >
       {DRAWINGS[icon]}

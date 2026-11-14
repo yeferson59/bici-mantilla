@@ -1,11 +1,11 @@
-import { useStore } from '@nanostores/react';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { useStore } from '@nanostores/preact';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { formatPrice } from '../../lib/price';
 import type { Icon } from '../../lib/types';
 import { orderMessage, whatsAppLink } from '../../lib/whatsapp';
 import { cartLines, changeQuantity, clearCart, isCartOpen, removeFromCart } from '../../stores/cart';
 import Illustration from '../Illustration';
+import Portal from '../Portal';
 
 export interface ProductSummary {
   id: string;
@@ -22,7 +22,7 @@ export default function Cart({ products }: { products: ProductSummary[] }) {
   const [mounted, setMounted] = useState(false);
   const openButton = useRef<HTMLButtonElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
-  const panel = useRef<HTMLElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
   const wasOpen = useRef(false);
 
   useEffect(() => setMounted(true), []);
@@ -89,94 +89,94 @@ export default function Cart({ products }: { products: ProductSummary[] }) {
         ref={openButton}
         type="button"
         onClick={() => isCartOpen.set(true)}
-        className="flex min-h-11 items-center gap-2 px-2 font-semibold hover:text-yellow"
+        class="flex min-h-11 items-center gap-2 px-2 font-semibold hover:text-yellow"
         aria-label={`Abrir tu pedido: ${count} ${count === 1 ? 'producto' : 'productos'}`}
       >
-        <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M3 4h2.5l2.2 11h10.6L20.5 7H7" />
           <circle cx="9.5" cy="19" r="1.4" />
           <circle cx="16.5" cy="19" r="1.4" />
         </svg>
-        <span className="hidden sm:inline">Pedido</span>
+        <span class="hidden sm:inline">Pedido</span>
         <span
-          className={`min-w-7 -skew-x-12 px-1.5 text-center text-sm font-bold ${
+          class={`min-w-7 -skew-x-12 px-1.5 text-center text-sm font-bold ${
             count ? 'bg-yellow text-carbon-950' : 'bg-carbon-700 text-fog'
           }`}
         >
-          <span className="inline-block skew-x-12">{count}</span>
+          <span class="inline-block skew-x-12">{count}</span>
         </span>
       </button>
 
-      {mounted &&
-        createPortal(
-          <div className="fixed inset-0 z-50" style={{ pointerEvents: open ? 'auto' : 'none' }} inert={!open}>
+      {mounted && (
+        <Portal>
+          <div class="fixed inset-0 z-50" style={{ pointerEvents: open ? 'auto' : 'none' }} inert={!open}>
             <div
-              className="drawer-backdrop absolute inset-0 bg-black/60"
+              class="drawer-backdrop absolute inset-0 bg-black/60"
               style={{ opacity: open ? 1 : 0 }}
               onClick={close}
             />
-            <aside
+            <div
               ref={panel}
               role="dialog"
               aria-modal="true"
               aria-label="Tu pedido"
-              className="drawer absolute inset-y-0 right-0 flex w-[min(100%,26rem)] flex-col bg-carbon-900"
+              class="drawer absolute inset-y-0 right-0 flex w-[min(100%,26rem)] flex-col bg-carbon-900"
               style={{ transform: open ? 'none' : 'translateX(100%)' }}
             >
-              <header className="flex items-center justify-between border-b border-carbon-700 px-5 py-4">
-                <h2 className="headline headline-m">Tu pedido</h2>
-                <button ref={closeButton} type="button" onClick={close} className="min-h-11 px-2 font-semibold hover:text-yellow">
+              <header class="flex items-center justify-between border-b border-carbon-700 px-5 py-4">
+                <h2 class="headline headline-m">Tu pedido</h2>
+                <button ref={closeButton} type="button" onClick={close} class="min-h-11 px-2 font-semibold hover:text-yellow">
                   Cerrar
                 </button>
               </header>
 
               {rows.length === 0 ? (
-                <div className="flex flex-1 flex-col items-start gap-5 px-5 py-8">
-                  <p className="text-fog">Tu pedido está vacío. Agrega productos desde el catálogo y aparecerán aquí.</p>
-                  <a href="/catalogo" className="button">
+                <div class="flex flex-1 flex-col items-start gap-5 px-5 py-8">
+                  <p class="text-fog">Tu pedido está vacío. Agrega productos desde el catálogo y aparecerán aquí.</p>
+                  <a href="/catalogo" class="button">
                     Ver el catálogo
                   </a>
                 </div>
               ) : (
                 <>
-                  <ul className="flex-1 divide-y divide-carbon-700 overflow-y-auto px-5">
+                  <ul class="flex-1 divide-y divide-carbon-700 overflow-y-auto px-5">
                     {rows.map((r) => {
                       const name = r.size ? `${r.product.name}, talla ${r.size}` : r.product.name;
                       return (
-                      <li key={`${r.id}/${r.size ?? ''}`} className="flex gap-3 py-4">
-                        <div className="grid size-16 shrink-0 place-items-center bg-carbon-950">
+                      <li key={`${r.id}/${r.size ?? ''}`} class="flex gap-3 py-4">
+                        <div class="grid size-16 shrink-0 place-items-center bg-carbon-950">
                           <Illustration icon={r.product.icon} className="size-10" />
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="font-semibold leading-snug">{r.product.name}</p>
-                          {r.size && <p className="text-sm text-fog">Talla {r.size}</p>}
-                          <div className="mt-2 flex items-center justify-between gap-2">
-                            <div className="flex items-center bg-carbon-800">
+                        <div class="min-w-0 flex-1">
+                          <p class="font-semibold leading-snug">{r.product.name}</p>
+                          {r.size && <p class="text-sm text-fog">Talla {r.size}</p>}
+                          <div class="mt-2 flex items-center justify-between gap-2">
+                            <div class="flex items-center bg-carbon-800">
                               <button
                                 type="button"
-                                className="size-9 text-lg hover:bg-carbon-700"
+                                class="size-9 text-lg hover:bg-carbon-700"
                                 onClick={() => changeQuantity(r.id, r.size, -1)}
                                 aria-label={`Quitar una unidad de ${name}`}
                               >
                                 −
                               </button>
-                              <span className="w-8 text-center font-semibold" aria-label={`${r.quantity} unidades`}>
+                              <span class="w-8 text-center font-semibold" aria-label={`${r.quantity} unidades`}>
                                 {r.quantity}
                               </span>
                               <button
                                 type="button"
-                                className="size-9 text-lg hover:bg-carbon-700"
+                                class="size-9 text-lg hover:bg-carbon-700"
                                 onClick={() => changeQuantity(r.id, r.size, 1)}
                                 aria-label={`Agregar una unidad de ${name}`}
                               >
                                 +
                               </button>
                             </div>
-                            <p className="font-semibold">{formatPrice(r.product.price * r.quantity)}</p>
+                            <p class="font-semibold">{formatPrice(r.product.price * r.quantity)}</p>
                           </div>
                           <button
                             type="button"
-                            className="mt-1 py-1 text-sm text-fog underline underline-offset-2 hover:text-chalk"
+                            class="mt-1 py-1 text-sm text-fog underline underline-offset-2 hover:text-chalk"
                             onClick={() => removeFromCart(r.id, r.size)}
                             aria-label={`Quitar ${name} del pedido`}
                           >
@@ -188,20 +188,20 @@ export default function Cart({ products }: { products: ProductSummary[] }) {
                     })}
                   </ul>
 
-                  <footer className="border-t border-carbon-700 px-5 py-5">
-                    <div className="flex items-baseline justify-between">
-                      <p className="text-fog">Total</p>
-                      <p className="headline text-3xl">{formatPrice(total)}</p>
+                  <footer class="border-t border-carbon-700 px-5 py-5">
+                    <div class="flex items-baseline justify-between">
+                      <p class="text-fog">Total</p>
+                      <p class="headline text-3xl">{formatPrice(total)}</p>
                     </div>
-                    <a href={orderLink} target="_blank" rel="noopener" className="button mt-4 w-full">
+                    <a href={orderLink} target="_blank" rel="noopener" class="button mt-4 w-full">
                       Enviar pedido por WhatsApp
                     </a>
-                    <p className="mt-3 text-sm text-fog">
+                    <p class="mt-3 text-sm text-fog">
                       Se abre WhatsApp con tu pedido ya escrito. Ahí confirmamos disponibilidad, pago y entrega.
                     </p>
                     <button
                       type="button"
-                      className="mt-3 py-1 text-sm text-fog underline underline-offset-2 hover:text-chalk"
+                      class="mt-3 py-1 text-sm text-fog underline underline-offset-2 hover:text-chalk"
                       onClick={clearCart}
                     >
                       Vaciar pedido
@@ -209,10 +209,10 @@ export default function Cart({ products }: { products: ProductSummary[] }) {
                   </footer>
                 </>
               )}
-            </aside>
-          </div>,
-          document.body,
-        )}
+            </div>
+          </div>
+        </Portal>
+      )}
     </>
   );
 }

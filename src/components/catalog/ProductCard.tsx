@@ -1,11 +1,11 @@
-import type { PointerEvent } from 'react';
+import type { TargetedPointerEvent } from 'preact';
 import { formatPrice } from '../../lib/price';
 import type { Product } from '../../lib/types';
 import { addToCart } from '../../stores/cart';
 import Illustration from '../Illustration';
 
 /** The illustration tilts toward the cursor (mouse only). */
-function tilt(e: PointerEvent<HTMLAnchorElement>) {
+function tilt(e: TargetedPointerEvent<HTMLAnchorElement>) {
   if (e.pointerType !== 'mouse') return;
   const box = e.currentTarget.getBoundingClientRect();
   const x = (e.clientX - box.left) / box.width - 0.5;
@@ -14,7 +14,7 @@ function tilt(e: PointerEvent<HTMLAnchorElement>) {
   e.currentTarget.style.setProperty('--gy', `${(x * 20).toFixed(1)}deg`);
 }
 
-function straighten(e: PointerEvent<HTMLAnchorElement>) {
+function straighten(e: TargetedPointerEvent<HTMLAnchorElement>) {
   e.currentTarget.style.setProperty('--gx', '0deg');
   e.currentTarget.style.setProperty('--gy', '0deg');
 }
@@ -25,17 +25,17 @@ export default function ProductCard({ product, note }: { product: Product; note?
   const mustChooseSize = sizes.length > 1;
 
   return (
-    <article className="plate flex h-full flex-col">
+    <article class="plate flex h-full flex-col">
       <a
         href={href}
         tabIndex={-1}
         aria-hidden="true"
         onPointerMove={tilt}
         onPointerLeave={straighten}
-        className="hex-bg relative grid aspect-[4/3] place-items-center bg-carbon-950 [perspective:600px]"
+        class="hex-bg relative grid aspect-[4/3] place-items-center bg-carbon-950 [perspective:600px]"
       >
         {product.featured && (
-          <span className="stripe absolute left-4 top-4">
+          <span class="stripe absolute left-4 top-4">
             <i />
             <i />
             <i />
@@ -47,25 +47,25 @@ export default function ProductCard({ product, note }: { product: Product; note?
         />
       </a>
 
-      <div className="flex flex-1 flex-col p-4 pb-5">
-        <p className="text-sm text-fog">{product.brand}</p>
-        <h3 className="mt-0.5 font-semibold leading-snug">
-          <a href={href} className="hover:text-yellow">
+      <div class="flex flex-1 flex-col p-4 pb-5">
+        <p class="text-sm text-fog">{product.brand}</p>
+        <h3 class="mt-0.5 font-semibold leading-snug">
+          <a href={href} class="hover:text-yellow">
             {product.name}
           </a>
         </h3>
-        {note && <p className="mt-2 text-sm text-fog">{note}</p>}
+        {note && <p class="mt-2 text-sm text-fog">{note}</p>}
 
-        <div className="mt-auto flex flex-wrap items-end justify-between gap-x-3 gap-y-2 pt-4">
-          <p className="headline text-[1.7rem]">{formatPrice(product.price)}</p>
+        <div class="mt-auto flex flex-wrap items-end justify-between gap-x-3 gap-y-2 pt-4">
+          <p class="headline text-[1.7rem]">{formatPrice(product.price)}</p>
           {mustChooseSize ? (
-            <a href={href} className="button button-sm button-dark mr-3">
+            <a href={href} class="button button-sm button-dark mr-3">
               Elegir talla
             </a>
           ) : (
             <button
               type="button"
-              className="button button-sm mr-3"
+              class="button button-sm mr-3"
               onClick={() => addToCart(product.id, sizes[0])}
               aria-label={`Agregar ${product.name} al pedido`}
             >

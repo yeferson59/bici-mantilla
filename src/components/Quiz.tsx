@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState } from 'preact/hooks';
 import { formatPrice } from '../lib/price';
 import { comesInSize, sizeFor } from '../lib/sizes';
 import { LEVELS, type Level, type Product, type Use } from '../lib/types';
@@ -87,26 +87,26 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
       : `Hola, hice el quiz de la web. Busco una bici de ${USE_TEXT[use]}, mido ${height} cm (talla ${size}) y mi presupuesto es de ${formatPrice(budget)}. ¿Qué me recomiendan?`);
 
   return (
-    <div className="plate p-6 pb-9 sm:p-9 sm:pb-11">
+    <div class="plate p-6 pb-9 sm:p-9 sm:pb-11">
       {step !== 'result' && (
-        <div className="mb-7">
-          <p className="text-sm text-fog">
+        <div class="mb-7">
+          <p class="text-sm text-fog">
             Pregunta {index + 1} de {steps.length}
           </p>
-          <div className="mt-2 h-1.5 -skew-x-[24deg] bg-carbon-700" role="progressbar" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={index} aria-label="Avance del quiz">
-            <div className="h-full bg-yellow transition-[width] duration-300" style={{ width: `${(index / steps.length) * 100}%` }} />
+          <div class="mt-2 h-1.5 -skew-x-[24deg] bg-carbon-700" role="progressbar" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={index} aria-label="Avance del quiz">
+            <div class="h-full bg-yellow transition-[width] duration-300" style={{ width: `${(index / steps.length) * 100}%` }} />
           </div>
         </div>
       )}
 
       {step === 'use' && (
         <fieldset>
-          <legend className="headline headline-m">¿Para qué la quieres?</legend>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <legend class="headline headline-m">¿Para qué la quieres?</legend>
+          <div class="mt-5 grid gap-3 sm:grid-cols-2">
             {USE_OPTIONS.map((u) => (
-              <button key={u.value} type="button" className="bg-carbon-700 p-4 text-left hover:bg-carbon-600" onClick={() => chooseUse(u.value)}>
-                <span className="block text-lg font-semibold">{u.title}</span>
-                <span className="text-fog">{u.detail}</span>
+              <button key={u.value} type="button" class="bg-carbon-700 p-4 text-left hover:bg-carbon-600" onClick={() => chooseUse(u.value)}>
+                <span class="block text-lg font-semibold">{u.title}</span>
+                <span class="text-fog">{u.detail}</span>
               </button>
             ))}
           </div>
@@ -115,20 +115,20 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
 
       {step === 'level' && (
         <fieldset>
-          <legend className="headline headline-m">¿Qué tanto ruedas?</legend>
-          <div className="mt-5 grid gap-3">
+          <legend class="headline headline-m">¿Qué tanto ruedas?</legend>
+          <div class="mt-5 grid gap-3">
             {LEVELS.map((n) => (
               <button
                 key={n}
                 type="button"
-                className="bg-carbon-700 p-4 text-left hover:bg-carbon-600"
+                class="bg-carbon-700 p-4 text-left hover:bg-carbon-600"
                 onClick={() => {
                   setLevel(n);
                   setStep('height');
                 }}
               >
-                <span className="block text-lg font-semibold">{LEVEL_TEXT[n].title}</span>
-                <span className="text-fog">{LEVEL_TEXT[n].detail}</span>
+                <span class="block text-lg font-semibold">{LEVEL_TEXT[n].title}</span>
+                <span class="text-fog">{LEVEL_TEXT[n].detail}</span>
               </button>
             ))}
           </div>
@@ -137,27 +137,27 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
 
       {step === 'height' && use && (
         <div>
-          <label htmlFor="quiz-height" className="headline headline-m block">
+          <label for="quiz-height" class="headline headline-m block">
             {use === 'kids' ? '¿Cuánto mide?' : '¿Cuánto mides?'}
           </label>
-          <p className="headline mt-5 text-7xl text-yellow">
-            {height} <span className="text-3xl text-chalk">cm</span>
+          <p class="headline mt-5 text-7xl text-yellow">
+            {height} <span class="text-3xl text-chalk">cm</span>
           </p>
           <input
             id="quiz-height"
             type="range"
-            className="mt-4 w-full accent-yellow"
+            class="mt-4 w-full accent-yellow"
             min={use === 'kids' ? 90 : 145}
             max={use === 'kids' ? 165 : 200}
             value={height}
-            onChange={(e) => setHeight(Number(e.target.value))}
+            onInput={(e) => setHeight(Number(e.currentTarget.value))}
           />
-          <p className="mt-3 text-fog" aria-live="polite">
-            Con esa estatura la talla es <strong className="text-chalk">{size}</strong>.
+          <p class="mt-3 text-fog" aria-live="polite">
+            Con esa estatura la talla es <strong class="text-chalk">{size}</strong>.
           </p>
           <button
             type="button"
-            className="button mt-6"
+            class="button mt-6"
             onClick={() => {
               setBudget(Math.round((range.min + range.max) / 2 / 50000) * 50000);
               setStep('budget');
@@ -170,21 +170,21 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
 
       {step === 'budget' && (
         <div>
-          <label htmlFor="quiz-budget" className="headline headline-m block">
+          <label for="quiz-budget" class="headline headline-m block">
             ¿Hasta cuánto quieres invertir?
           </label>
-          <p className="headline mt-5 text-6xl text-yellow sm:text-7xl">{formatPrice(budget)}</p>
+          <p class="headline mt-5 text-6xl text-yellow sm:text-7xl">{formatPrice(budget)}</p>
           <input
             id="quiz-budget"
             type="range"
-            className="mt-4 w-full accent-yellow"
+            class="mt-4 w-full accent-yellow"
             min={range.min}
             max={range.max}
             step={50000}
             value={budget}
-            onChange={(e) => setBudget(Number(e.target.value))}
+            onInput={(e) => setBudget(Number(e.currentTarget.value))}
           />
-          <button type="button" className="button mt-6" onClick={() => setStep('result')}>
+          <button type="button" class="button mt-6" onClick={() => setStep('result')}>
             Ver mis bicis
           </button>
         </div>
@@ -192,17 +192,17 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
 
       {step === 'result' && use && (
         <div aria-live="polite">
-          <p className="text-fog">Tu talla</p>
-          <p className="headline text-7xl text-yellow">{size}</p>
-          <p className="mt-2 max-w-[38rem] text-fog">
+          <p class="text-fog">Tu talla</p>
+          <p class="headline text-7xl text-yellow">{size}</p>
+          <p class="mt-2 max-w-[38rem] text-fog">
             Es una guía según la estatura. El largo de piernas y brazos también cuenta: en la tienda te medimos y la confirmamos.
           </p>
 
-          <h2 className="headline headline-m mt-8">
+          <h2 class="headline headline-m mt-8">
             {result.anyFits ? 'Estas son para ti' : 'Ninguna entra en ese presupuesto'}
           </h2>
-          {!result.anyFits && <p className="mt-2 text-fog">Estas son las que más se acercan.</p>}
-          <ul className="mt-5 grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-5 [--color-carbon-800:var(--color-carbon-700)]">
+          {!result.anyFits && <p class="mt-2 text-fog">Estas son las que más se acercan.</p>}
+          <ul class="mt-5 grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-5 [--color-carbon-800:var(--color-carbon-700)]">
             {result.list.map((b) => (
               <li key={b.id}>
                 <ProductCard
@@ -213,13 +213,13 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
             ))}
           </ul>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div class="mt-8 flex flex-wrap gap-3">
             {message && (
-              <a href={whatsAppLink(message)} target="_blank" rel="noopener" className="button">
+              <a href={whatsAppLink(message)} target="_blank" rel="noopener" class="button">
                 Pedir asesoría por WhatsApp
               </a>
             )}
-            <button type="button" className="button button-dark" onClick={restart}>
+            <button type="button" class="button button-dark" onClick={restart}>
               Empezar de nuevo
             </button>
           </div>
@@ -227,7 +227,7 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
       )}
 
       {step !== 'use' && step !== 'result' && (
-        <button type="button" className="mt-6 block py-1 text-fog underline underline-offset-2 hover:text-chalk" onClick={goBack}>
+        <button type="button" class="mt-6 block py-1 text-fog underline underline-offset-2 hover:text-chalk" onClick={goBack}>
           Volver a la pregunta anterior
         </button>
       )}

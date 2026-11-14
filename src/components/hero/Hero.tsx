@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import BikeSVG from '../BikeSVG';
 import type { HeroScene, Region } from './scene';
 import { clamp, smoothstep, TIMING } from './timing';
@@ -143,52 +143,52 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={section} className="hero hex-bg bg-carbon-900" aria-label="Presentación">
-      <div className="hero-sticky">
+    <section ref={section} class="hero hex-bg bg-carbon-900" aria-label="Presentación">
+      <div class="hero-sticky">
         {no3d ? (
-          <div className="absolute inset-x-0 bottom-0 flex justify-end px-5 pb-10 opacity-60" aria-hidden="true">
+          <div class="absolute inset-x-0 bottom-0 flex justify-end px-5 pb-10 opacity-60" aria-hidden="true">
             <BikeSVG className="w-[min(100%,44rem)]" />
           </div>
         ) : (
-          <canvas ref={canvasRef} className="hero-canvas" aria-hidden="true" />
+          <canvas ref={canvasRef} class="hero-canvas" aria-hidden="true" />
         )}
 
-        <div className="hero-text wrapper">
-          <div className="act" data-act="1" ref={(el) => void (actRefs.current[0] = el)}>
-            <h1 className="headline headline-xl">Todo empieza a pie.</h1>
-            <p className="mt-5 max-w-[26rem] text-lg text-fog">
+        <div class="hero-text wrapper">
+          <div class="act" data-act="1" ref={(el) => void (actRefs.current[0] = el)}>
+            <h1 class="headline headline-xl">Todo empieza a pie.</h1>
+            <p class="mt-5 max-w-[26rem] text-lg text-fog">
               Y termina encima de la bici correcta. Bicicletas, repuestos, accesorios y taller en un solo lugar.
             </p>
           </div>
 
-          <div className="act" data-act="2" ref={(el) => void (actRefs.current[1] = el)}>
-            <p className="headline headline-xl">Súbete.</p>
-            <p className="mt-5 max-w-[26rem] text-lg text-fog">
+          <div class="act" data-act="2" ref={(el) => void (actRefs.current[1] = el)}>
+            <p class="headline headline-xl">Súbete.</p>
+            <p class="mt-5 max-w-[26rem] text-lg text-fog">
               Te ayudamos a elegir la talla y te la entregamos ajustada, lista para rodar.
             </p>
           </div>
 
-          <div className="act" data-act="3" ref={(el) => void (actRefs.current[2] = el)}>
-            <p className="headline headline-xl animated-only">Arranca.</p>
-            <p className="animated-only mt-5 max-w-[26rem] text-lg text-fog">
+          <div class="act" data-act="3" ref={(el) => void (actRefs.current[2] = el)}>
+            <p class="headline headline-xl animated-only">Arranca.</p>
+            <p class="animated-only mt-5 max-w-[26rem] text-lg text-fog">
               Arma tu pedido aquí y lo cerramos por WhatsApp.
             </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <a href="/catalogo" className="button">
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="/catalogo" class="button">
                 Ver el catálogo
               </a>
-              <a href="/encuentra-tu-bici" className="button button-dark">
+              <a href="/encuentra-tu-bici" class="button button-dark">
                 Encuentra tu bici
               </a>
             </div>
           </div>
         </div>
 
-        <p ref={hint} className="hero-hint wrapper text-sm text-fog" aria-hidden="true">
+        <p ref={hint} class="hero-hint wrapper text-sm text-fog" aria-hidden="true">
           Baja para verla arrancar
         </p>
 
-        <div className="hero-progress wrapper" aria-hidden="true">
+        <div class="hero-progress wrapper" aria-hidden="true">
           {ACTS.map((act, i) => {
             const from = i === 0 ? 0 : ACTS[i - 1].until;
             return (

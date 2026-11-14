@@ -1,4 +1,5 @@
-import { useEffect, useState, type SubmitEvent } from 'react';
+import type { TargetedSubmitEvent } from 'preact';
+import { useEffect, useState } from 'preact/hooks';
 import type { Service } from '../lib/types';
 import { appointmentMessage, whatsAppLink } from '../lib/whatsapp';
 
@@ -15,7 +16,7 @@ export default function WorkshopForm({ services }: { services: Service[] }) {
     setToday(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
   }, []);
 
-  const onSubmit = (e: SubmitEvent<HTMLFormElement>) => {
+  const onSubmit = (e: TargetedSubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const text = (field: string) => String(data.get(field) ?? '').trim();
@@ -34,23 +35,23 @@ export default function WorkshopForm({ services }: { services: Service[] }) {
   };
 
   return (
-    <form onSubmit={onSubmit} className="plate grid gap-4 p-6 pb-9">
-      <h2 className="headline headline-m">Pide tu cita</h2>
+    <form onSubmit={onSubmit} class="plate grid gap-4 p-6 pb-9">
+      <h2 class="headline headline-m">Pide tu cita</h2>
 
       <div>
-        <label className="field-label" htmlFor="appointment-name">
+        <label class="field-label" for="appointment-name">
           Tu nombre
         </label>
-        <input id="appointment-name" name="name" className="field" required autoComplete="name" />
+        <input id="appointment-name" name="name" class="field" required autoComplete="name" />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div class="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="field-label" htmlFor="appointment-bike">
+          <label class="field-label" for="appointment-bike">
             Tipo de bicicleta
           </label>
-          <select id="appointment-bike" name="bike" className="field" required defaultValue="">
-            <option value="" disabled>
+          <select id="appointment-bike" name="bike" class="field" required>
+            <option value="" disabled selected>
               Elige una
             </option>
             {BIKE_TYPES.map((t) => (
@@ -59,19 +60,19 @@ export default function WorkshopForm({ services }: { services: Service[] }) {
           </select>
         </div>
         <div>
-          <label className="field-label" htmlFor="appointment-date">
+          <label class="field-label" for="appointment-date">
             Día que te sirve
           </label>
-          <input id="appointment-date" name="date" type="date" className="field" required min={today || undefined} />
+          <input id="appointment-date" name="date" type="date" class="field" required min={today || undefined} />
         </div>
       </div>
 
       <div>
-        <label className="field-label" htmlFor="appointment-service">
+        <label class="field-label" for="appointment-service">
           Servicio
         </label>
-        <select id="appointment-service" name="service" className="field" required defaultValue="">
-          <option value="" disabled>
+        <select id="appointment-service" name="service" class="field" required>
+          <option value="" disabled selected>
             Elige uno
           </option>
           {services.map((s) => (
@@ -82,16 +83,16 @@ export default function WorkshopForm({ services }: { services: Service[] }) {
       </div>
 
       <div>
-        <label className="field-label" htmlFor="appointment-note">
-          ¿Qué le pasa a la bici? <span className="font-normal text-fog">(opcional)</span>
+        <label class="field-label" for="appointment-note">
+          ¿Qué le pasa a la bici? <span class="font-normal text-fog">(opcional)</span>
         </label>
-        <textarea id="appointment-note" name="note" className="field" rows={3} placeholder="Suena al frenar, los cambios saltan…" />
+        <textarea id="appointment-note" name="note" class="field" rows={3} placeholder="Suena al frenar, los cambios saltan…" />
       </div>
 
-      <button type="submit" className="button justify-self-start">
+      <button type="submit" class="button justify-self-start">
         Pedir cita por WhatsApp
       </button>
-      <p className="text-sm text-fog" role="status">
+      <p class="text-sm text-fog" role="status">
         {sent
           ? 'Se abrió WhatsApp con tu solicitud. Envía el mensaje y te confirmamos la hora.'
           : 'Se abre WhatsApp con la solicitud ya escrita. La cita queda en firme cuando te respondemos.'}
