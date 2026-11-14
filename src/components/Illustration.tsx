@@ -3,9 +3,9 @@ import type { Icon } from '../lib/types';
 
 /**
  * Placeholder illustrations for the products, until the real photos arrive.
- * White strokes with a yellow detail, on a 64 × 64 grid.
+ * Ink strokes with a red detail, on a 64 × 64 grid.
  */
-const A = { stroke: 'var(--color-yellow)' };
+const A = { stroke: 'var(--color-red)' };
 
 const DRAWINGS: Record<Icon, ComponentChildren> = {
   bike: (

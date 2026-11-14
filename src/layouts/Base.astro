@@ -1,11 +1,11 @@
 ---
-import '@fontsource-variable/saira/wdth.css';
-import '@fontsource-variable/saira/wdth-italic.css';
-import '../styles/global.css';
-import Cart from '../components/cart/Cart';
-import { shop } from '../config/shop';
-import { products } from '../lib/catalog';
-import { whatsAppLink } from '../lib/whatsapp';
+import "@fontsource-variable/saira/wdth.css";
+import "@fontsource-variable/saira/wdth-italic.css";
+import "../styles/global.css";
+import Cart from "../components/cart/Cart";
+import { shop } from "../config/shop";
+import { products } from "../lib/catalog";
+import { whatsAppLink } from "../lib/whatsapp";
 
 interface Props {
   title?: string;
@@ -13,30 +13,37 @@ interface Props {
 }
 
 const { title, description = shop.description } = Astro.props;
-const fullTitle = title ? `${title} | ${shop.name}` : `${shop.name}: bicicletas, repuestos y taller`;
+const fullTitle = title
+  ? `${title} | ${shop.name}`
+  : `${shop.name}: bicicletas, repuestos y taller`;
 
 const menu = [
-  { href: '/catalogo', label: 'Catálogo' },
-  { href: '/taller', label: 'Taller' },
-  { href: '/encuentra-tu-bici', label: 'Encuentra tu bici' },
+  { href: "/catalogo", label: "Catálogo" },
+  { href: "/taller", label: "Taller" },
+  { href: "/encuentra-tu-bici", label: "Encuentra tu bici" },
 ];
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 
-const summaries = products.map(({ id, name, price, icon }) => ({ id, name, price, icon }));
+const summaries = products.map(({ id, name, price, icon }) => ({
+  id,
+  name,
+  price,
+  icon,
+}));
 const greetingLink = whatsAppLink(`Hola ${shop.name}, vengo de la página web.`);
 
 const businessData = {
-  '@context': 'https://schema.org',
-  '@type': 'BikeStore',
+  "@context": "https://schema.org",
+  "@type": "BikeStore",
   name: shop.name,
   description: shop.description,
   telephone: `+${shop.whatsapp}`,
   ...((shop.address || shop.city) && {
     address: {
-      '@type': 'PostalAddress',
+      "@type": "PostalAddress",
       streetAddress: shop.address ?? undefined,
       addressLocality: shop.city ?? undefined,
-      addressCountry: 'CO',
+      addressCountry: "CO",
     },
   }),
   ...(shop.mapUrl && { hasMap: shop.mapUrl }),
@@ -49,7 +56,7 @@ const businessData = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#111112" />
+    <meta name="theme-color" content="#ffe600" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
@@ -57,45 +64,61 @@ const businessData = {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_CO" />
-    <script type="application/ld+json" set:html={JSON.stringify(businessData)} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(businessData)}
+    />
   </head>
   <body class="flex min-h-screen flex-col">
-    <a href="#content" class="button sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60]">
+    <a
+      href="#content"
+      class="button sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-60"
+    >
       Saltar al contenido
     </a>
 
-    <header class="sticky top-0 z-40 h-[var(--header-height)] border-b border-carbon-700 bg-carbon-950">
+    <header class="signboard sticky top-0 z-40 h-(--header-height) border-b-2 border-ink">
       <div class="wrapper flex h-full items-center justify-between gap-4">
-        <a href="/" class="flex items-baseline gap-2" aria-label={`${shop.name}, ir al inicio`}>
-          <span class="headline hidden text-base sm:inline">Bicicletería</span>
-          <span class="headline text-[2rem] text-yellow">Mantilla</span>
+        <a
+          href="/"
+          class="flex items-end gap-1.5"
+          aria-label={`${shop.name}, ir al inicio`}
+        >
+          <span class="wordmark text-[2.1rem]">Mantilla</span>
+          <span class="mb-0.5 hidden text-sm font-semibold italic leading-none [font-stretch-75%] sm:inline">
+            bicicletería
+          </span>
         </a>
 
         <nav
           id="menu"
           aria-label="Principal"
-          class="absolute inset-x-0 top-full hidden border-b border-carbon-700 bg-carbon-950 px-5 py-3 md:static md:block md:border-0 md:p-0"
+          class="signboard absolute inset-x-0 top-full hidden border-b-2 border-ink px-5 py-3 md:static md:block md:border-0 md:p-0"
         >
           <ul class="flex flex-col md:flex-row md:gap-7">
-            {
-              menu.map((item) => (
-                <li>
-                  <a
-                    href={item.href}
-                    aria-current={path.startsWith(item.href) ? 'page' : undefined}
-                    class="flex min-h-11 items-center font-semibold hover:text-yellow aria-[current]:text-yellow"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))
-            }
+            {menu.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={path.startsWith(item.href) ? "page" : undefined}
+                  class="flex min-h-11 items-center font-semibold underline-offset-[0.35em] hover:underline aria-[current]:underline aria-[current]:decoration-[3px]"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
           </ul>
         </nav>
 
         <div class="flex items-center gap-1">
           <Cart client:load products={summaries} />
-          <button id="menu-button" type="button" class="min-h-11 px-2 font-semibold hover:text-yellow md:hidden" aria-expanded="false" aria-controls="menu">
+          <button
+            id="menu-button"
+            type="button"
+            class="min-h-11 px-2 font-semibold underline-offset-[0.35em] hover:underline md:hidden"
+            aria-expanded="false"
+            aria-controls="menu"
+          >
             Menú
           </button>
         </div>
@@ -106,61 +129,93 @@ const businessData = {
       <slot />
     </main>
 
-    <footer class="hex-bg mt-24 border-t border-carbon-700 bg-carbon-950">
-      <div class="wrapper grid gap-10 py-12 md:grid-cols-[1.4fr_1fr_1fr]">
+    <footer class="hex-bg mt-24 bg-ink text-card **:focus-visible:outline-yellow">
+      <div class="wrapper grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <p class="headline text-lg">Bicicletería</p>
-          <p class="headline text-5xl text-yellow">Mantilla</p>
-          <span class="stripe mt-4"><i></i><i></i><i></i></span>
-          <p class="mt-5 max-w-[24rem] text-fog">{shop.description}</p>
+          <p class="text-lg font-semibold italic leading-none [font-stretch-75%]">
+            Bicicletería
+          </p>
+          <p class="wordmark mt-1 text-6xl text-yellow">Mantilla</p>
+          <span class="stripe mt-5">
+            <i></i>
+            <i></i>
+            <i></i>
+          </span>
+          <p class="mt-5 max-w-[24rem] text-night-text">{shop.description}</p>
         </div>
 
         <div>
           <h2 class="font-semibold">Contacto</h2>
-          <ul class="mt-3 grid gap-2 text-fog">
+          <ul class="mt-3 grid gap-2 text-night-text">
             <li>
-              <a href={greetingLink} target="_blank" rel="noopener" class="link">WhatsApp {shop.displayPhone}</a>
+              <a
+                href={greetingLink}
+                target="_blank"
+                rel="noopener"
+                class="text-yellow underline underline-offset-[0.2em] hover:text-card"
+              >
+                WhatsApp {shop.displayPhone}
+              </a>
             </li>
-            {
-              shop.socials.map((s) => (
-                <li>
-                  {s.network}:{' '}
-                  {s.url ? (
-                    <a href={s.url} target="_blank" rel="noopener" class="link">
-                      {s.name}
-                    </a>
-                  ) : (
-                    s.name
-                  )}
-                </li>
-              ))
-            }
-            {(shop.address || shop.city) && <li>{[shop.address, shop.city].filter(Boolean).join(', ')}</li>}
-            {
-              shop.mapUrl && (
-                <li>
-                  <a href={shop.mapUrl} target="_blank" rel="noopener" class="link">Cómo llegar</a>
-                </li>
-              )
-            }
-            {shop.openingHours.map((h) => <li>{h.days}: {h.hours}</li>)}
+            {shop.socials.map((s) => (
+              <li>
+                {s.network}:{" "}
+                {s.url ? (
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener"
+                    class="text-yellow underline underline-offset-[0.2em] hover:text-card"
+                  >
+                    {s.name}
+                  </a>
+                ) : (
+                  s.name
+                )}
+              </li>
+            ))}
+            {(shop.address || shop.city) && (
+              <li>{[shop.address, shop.city].filter(Boolean).join(", ")}</li>
+            )}
+            {shop.mapUrl && (
+              <li>
+                <a
+                  href={shop.mapUrl}
+                  target="_blank"
+                  rel="noopener"
+                  class="text-yellow underline underline-offset-[0.2em] hover:text-card"
+                >
+                  Cómo llegar
+                </a>
+              </li>
+            )}
+            {shop.openingHours.map((h) => (
+              <li>
+                {h.days}: {h.hours}
+              </li>
+            ))}
           </ul>
         </div>
 
         <div>
           <h2 class="font-semibold">La tienda</h2>
           <ul class="mt-3 grid gap-2">
-            {menu.map((item) => <li><a href={item.href} class="text-fog hover:text-yellow">{item.label}</a></li>)}
+            {menu.map((item) => (
+              <li>
+                <a href={item.href} class="text-night-text hover:text-yellow">
+                  {item.label}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
-      {
-        shop.sampleCatalog && (
-          <p class="wrapper border-t border-carbon-700 py-4 text-sm text-fog">
-            Catálogo de muestra: los productos, marcas y precios de esta página son ejemplos.
-          </p>
-        )
-      }
+      {shop.sampleCatalog && (
+        <p class="wrapper border-t border-white/15 py-4 text-sm text-night-text">
+          Catálogo de muestra: los productos, marcas y precios de esta página
+          son ejemplos.
+        </p>
+      )}
     </footer>
 
     <a
@@ -168,25 +223,33 @@ const businessData = {
       target="_blank"
       rel="noopener"
       aria-label="Escribir a la tienda por WhatsApp"
-      class="fixed bottom-4 right-4 z-30 grid size-14 place-items-center rounded-full bg-yellow text-carbon-950 hover:bg-white"
+      class="fixed bottom-4 right-4 z-30 grid size-14 place-items-center rounded-full bg-ink text-yellow shadow-[0_0_0_2px_var(--color-yellow)] hover:bg-red hover:text-card"
     >
-      <svg viewBox="0 0 24 24" class="size-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M4 20l1.3-4.1A8 8 0 1 1 8.2 18.8L4 20z"></path>
-        <path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.6-1.9-1-0.8 0.8c-0.9-0.4-1.6-1.1-2-2l0.8-0.8-1-1.9L9 9.5z"></path>
+      <svg
+        viewBox="0 0 24 24"
+        class="size-8"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path>
       </svg>
     </a>
 
     <script>
-      const button = document.getElementById('menu-button');
-      const menu = document.getElementById('menu');
-      button?.addEventListener('click', () => {
-        const open = menu?.classList.toggle('hidden') === false;
-        button.setAttribute('aria-expanded', String(open));
+      const button = document.getElementById("menu-button");
+      const menu = document.getElementById("menu");
+      button?.addEventListener("click", () => {
+        const open = menu?.classList.toggle("hidden") === false;
+        button.setAttribute("aria-expanded", String(open));
       });
-      document.addEventListener('keydown', (e) => {
-        if (e.key !== 'Escape' || button?.getAttribute('aria-expanded') !== 'true') return;
-        menu?.classList.add('hidden');
-        button.setAttribute('aria-expanded', 'false');
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key !== "Escape" ||
+          button?.getAttribute("aria-expanded") !== "true"
+        )
+          return;
+        menu?.classList.add("hidden");
+        button.setAttribute("aria-expanded", "false");
         button.focus();
       });
     </script>

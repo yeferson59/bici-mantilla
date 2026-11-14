@@ -40,7 +40,7 @@ export default function ProductPurchase({ product }: { product: Product }) {
               </button>
             ))}
           </div>
-          <p class={`mt-2 text-sm ${missingSize ? 'text-yellow' : 'text-fog'}`} role={missingSize ? 'alert' : undefined}>
+          <p class={`mt-2 text-sm ${missingSize ? 'font-semibold text-red' : 'text-steel'}`} role={missingSize ? 'alert' : undefined}>
             {missingSize ? (
               'Elige una talla para agregarla al pedido.'
             ) : product.category === 'bikes' ? (
@@ -56,10 +56,10 @@ export default function ProductPurchase({ product }: { product: Product }) {
       )}
 
       <div class="mt-5 flex flex-wrap items-center gap-4">
-        <div class="flex items-center bg-carbon-800">
+        <div class="flex items-center border border-rule bg-card">
           <button
             type="button"
-            class="size-12 text-xl hover:bg-carbon-700"
+            class="size-12 text-xl hover:bg-paper"
             onClick={() => setQuantity((n) => Math.max(1, n - 1))}
             aria-label="Una unidad menos"
           >
@@ -70,7 +70,7 @@ export default function ProductPurchase({ product }: { product: Product }) {
           </span>
           <button
             type="button"
-            class="size-12 text-xl hover:bg-carbon-700"
+            class="size-12 text-xl hover:bg-paper"
             onClick={() => setQuantity((n) => Math.min(20, n + 1))}
             aria-label="Una unidad más"
           >
@@ -82,7 +82,7 @@ export default function ProductPurchase({ product }: { product: Product }) {
         </button>
       </div>
 
-      <p class="mt-5 text-fog">
+      <p class="mt-5 text-steel">
         ¿Tienes dudas?{' '}
         <a href={whatsAppLink(inquiryMessage(product.name))} target="_blank" rel="noopener" class="link">
           Pregunta por este producto en WhatsApp

@@ -1,71 +1,55 @@
-import type { TargetedPointerEvent } from 'preact';
 import { formatPrice } from '../../lib/price';
 import type { Product } from '../../lib/types';
 import { addToCart } from '../../stores/cart';
 import Illustration from '../Illustration';
 
-/** The illustration tilts toward the cursor (mouse only). */
-function tilt(e: TargetedPointerEvent<HTMLAnchorElement>) {
-  if (e.pointerType !== 'mouse') return;
-  const box = e.currentTarget.getBoundingClientRect();
-  const x = (e.clientX - box.left) / box.width - 0.5;
-  const y = (e.clientY - box.top) / box.height - 0.5;
-  e.currentTarget.style.setProperty('--gx', `${(-y * 16).toFixed(1)}deg`);
-  e.currentTarget.style.setProperty('--gy', `${(x * 20).toFixed(1)}deg`);
-}
-
-function straighten(e: TargetedPointerEvent<HTMLAnchorElement>) {
-  e.currentTarget.style.setProperty('--gx', '0deg');
-  e.currentTarget.style.setProperty('--gy', '0deg');
-}
-
-export default function ProductCard({ product, note }: { product: Product; note?: string }) {
+/**
+ * A product as a price tag hanging from the pegboard. Featured products get the yellow tag.
+ * Place it inside an `li` so the tags of a grid hang at slightly different angles.
+ * `highlightFeatured={false}` keeps the tag white, for lists where every product is featured.
+ */
+export default function ProductCard({
+  product,
+  note,
+  highlightFeatured = true,
+}: {
+  product: Product;
+  note?: string;
+  highlightFeatured?: boolean;
+}) {
   const href = `/producto/${product.id}`;
+  const featured = highlightFeatured && !!product.featured;
   const sizes = product.sizes ?? [];
   const mustChooseSize = sizes.length > 1;
 
   return (
-    <article class="plate flex h-full flex-col">
-      <a
-        href={href}
-        tabIndex={-1}
-        aria-hidden="true"
-        onPointerMove={tilt}
-        onPointerLeave={straighten}
-        class="hex-spot relative grid aspect-[4/3] place-items-center bg-carbon-950 [perspective:600px]"
-      >
-        {product.featured && (
-          <span class="stripe absolute left-3 top-3 origin-top-left scale-75 sm:left-4 sm:top-4 sm:scale-100">
-            <i />
-            <i />
-            <i />
-          </span>
-        )}
-        <Illustration
-          icon={product.icon}
-          className="w-[46%] transition-transform duration-150 ease-out [transform:rotateX(var(--gx,0deg))_rotateY(var(--gy,0deg))]"
-        />
-      </a>
+    <div class="tag-hook">
+      <article class={`tag flex flex-col px-4 pb-4 pt-9 sm:px-5 sm:pb-5 ${featured ? 'tag-featured' : ''}`}>
+        <a href={href} tabIndex={-1} aria-hidden="true" class="grid aspect-[2/1] place-items-center">
+          <Illustration icon={product.icon} className="h-[82%]" />
+        </a>
 
-      <div class="flex flex-1 flex-col p-3 pb-4 sm:p-4 sm:pb-5">
-        <p class="text-sm text-fog">{product.brand}</p>
+        <p class={`mt-3 text-sm ${featured ? 'text-olive' : 'text-steel'}`}>
+          {product.brand}
+          {featured && <span class="sr-only">. Destacado</span>}
+        </p>
         <h3 class="mt-0.5 font-semibold leading-snug">
-          <a href={href} class="hover:text-yellow">
+          <a href={href} class="hover:underline hover:underline-offset-[0.2em]">
             {product.name}
           </a>
         </h3>
-        {note && <p class="mt-2 text-sm text-fog">{note}</p>}
+        {note && <p class={`mt-2 text-sm ${featured ? 'text-olive' : 'text-steel'}`}>{note}</p>}
 
-        <div class="mt-auto flex flex-wrap items-end justify-between gap-x-3 gap-y-2 pt-4">
-          <p class="headline text-[1.45rem] sm:text-[1.7rem]">{formatPrice(product.price)}</p>
+        <div class="mt-auto flex flex-wrap items-end justify-between gap-x-3 gap-y-3 pt-4">
+          <p class="price text-[1.6rem] sm:text-[1.9rem]">{formatPrice(product.price)}</p>
           {mustChooseSize ? (
-            <a href={href} class="button button-sm button-dark mr-3">
+            <a href={href} class="button button-sm button-quiet">
               Elegir talla
             </a>
           ) : (
             <button
               type="button"
-              class="button button-sm mr-3"
+              class="button button-sm"
               onClick={() => addToCart(product.id, sizes[0])}
               aria-label={`Agregar ${product.name} al pedido`}
             >
@@ -73,7 +57,7 @@ export default function ProductCard({ product, note }: { product: Product; note?
             </button>
           )}
         </div>
-      </div>
-    </article>
+      </article>
+    </div>
   );
 }

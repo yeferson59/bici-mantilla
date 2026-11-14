@@ -6,8 +6,8 @@ import { clamp, smoothstep, TIMING } from './timing';
 /** Scroll range each act covers, and the color of its segment in the progress bar. */
 const ACTS = [
   { until: TIMING.walkEnd, color: 'var(--color-red)' },
-  { until: TIMING.seated, color: 'var(--color-chalk)' },
-  { until: 1, color: 'var(--color-yellow)' },
+  { until: TIMING.seated, color: 'var(--color-card)' },
+  { until: 1, color: 'var(--color-ink)' },
 ];
 
 function opacities(p: number) {
@@ -143,10 +143,10 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={section} class="hero hex-bg bg-carbon-900" aria-label="Presentación">
+    <section ref={section} class="hero signboard" aria-label="Presentación">
       <div class="hero-sticky">
         {no3d ? (
-          <div class="absolute inset-x-0 bottom-0 flex justify-end px-5 pb-10 opacity-60" aria-hidden="true">
+          <div class="absolute inset-x-0 bottom-0 flex justify-end px-5 pb-10 opacity-80" aria-hidden="true">
             <BikeSVG className="w-[min(100%,44rem)]" />
           </div>
         ) : (
@@ -156,35 +156,35 @@ export default function Hero() {
         <div class="hero-text wrapper">
           <div class="act" data-act="1" ref={(el) => void (actRefs.current[0] = el)}>
             <h1 class="headline headline-xl">Todo empieza a pie.</h1>
-            <p class="mt-5 max-w-[26rem] text-lg text-fog">
+            <p class="mt-5 max-w-[26rem] text-lg font-medium text-olive">
               Y termina encima de la bici correcta. Bicicletas, repuestos, accesorios y taller en un solo lugar.
             </p>
           </div>
 
           <div class="act" data-act="2" ref={(el) => void (actRefs.current[1] = el)}>
             <p class="headline headline-xl">Súbete.</p>
-            <p class="mt-5 max-w-[26rem] text-lg text-fog">
+            <p class="mt-5 max-w-[26rem] text-lg font-medium text-olive">
               Te ayudamos a elegir la talla y te la entregamos ajustada, lista para rodar.
             </p>
           </div>
 
           <div class="act" data-act="3" ref={(el) => void (actRefs.current[2] = el)}>
             <p class="headline headline-xl animated-only">Arranca.</p>
-            <p class="animated-only mt-5 max-w-[26rem] text-lg text-fog">
+            <p class="animated-only mt-5 max-w-[26rem] text-lg font-medium text-olive">
               Arma tu pedido aquí y lo cerramos por WhatsApp.
             </p>
             <div class="mt-7 flex flex-wrap gap-3">
               <a href="/catalogo" class="button">
                 Ver el catálogo
               </a>
-              <a href="/encuentra-tu-bici" class="button button-dark">
+              <a href="/encuentra-tu-bici" class="button button-light">
                 Encuentra tu bici
               </a>
             </div>
           </div>
         </div>
 
-        <p ref={hint} class="hero-hint wrapper text-sm text-fog" aria-hidden="true">
+        <p ref={hint} class="hero-hint wrapper text-sm font-medium text-olive" aria-hidden="true">
           Baja para verla arrancar
         </p>
 

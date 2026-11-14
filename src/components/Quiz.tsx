@@ -87,14 +87,14 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
       : `Hola, hice el quiz de la web. Busco una bici de ${USE_TEXT[use]}, mido ${height} cm (talla ${size}) y mi presupuesto es de ${formatPrice(budget)}. ¿Qué me recomiendan?`);
 
   return (
-    <div class="plate p-6 pb-9 sm:p-9 sm:pb-11">
+    <div class="ticket px-5 pb-8 pt-6 sm:px-9 sm:pb-11 sm:pt-8">
       {step !== 'result' && (
         <div class="mb-7">
-          <p class="text-sm text-fog">
+          <p class="text-sm text-steel">
             Pregunta {index + 1} de {steps.length}
           </p>
-          <div class="mt-2 h-1.5 -skew-x-[24deg] bg-carbon-700" role="progressbar" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={index} aria-label="Avance del quiz">
-            <div class="h-full bg-yellow transition-[width] duration-300" style={{ width: `${(index / steps.length) * 100}%` }} />
+          <div class="mt-2 h-1.5 -skew-x-[24deg] bg-rule" role="progressbar" aria-valuemin={0} aria-valuemax={steps.length} aria-valuenow={index} aria-label="Avance del quiz">
+            <div class="h-full bg-ink transition-[width] duration-300" style={{ width: `${(index / steps.length) * 100}%` }} />
           </div>
         </div>
       )}
@@ -104,9 +104,9 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
           <legend class="headline headline-m">¿Para qué la quieres?</legend>
           <div class="mt-5 grid gap-3 sm:grid-cols-2">
             {USE_OPTIONS.map((u) => (
-              <button key={u.value} type="button" class="bg-carbon-700 p-4 text-left hover:bg-carbon-600" onClick={() => chooseUse(u.value)}>
+              <button key={u.value} type="button" class="border-2 border-transparent bg-paper p-4 text-left hover:border-ink" onClick={() => chooseUse(u.value)}>
                 <span class="block text-lg font-semibold">{u.title}</span>
-                <span class="text-fog">{u.detail}</span>
+                <span class="text-steel">{u.detail}</span>
               </button>
             ))}
           </div>
@@ -121,14 +121,14 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
               <button
                 key={n}
                 type="button"
-                class="bg-carbon-700 p-4 text-left hover:bg-carbon-600"
+                class="border-2 border-transparent bg-paper p-4 text-left hover:border-ink"
                 onClick={() => {
                   setLevel(n);
                   setStep('height');
                 }}
               >
                 <span class="block text-lg font-semibold">{LEVEL_TEXT[n].title}</span>
-                <span class="text-fog">{LEVEL_TEXT[n].detail}</span>
+                <span class="text-steel">{LEVEL_TEXT[n].detail}</span>
               </button>
             ))}
           </div>
@@ -140,20 +140,20 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
           <label for="quiz-height" class="headline headline-m block">
             {use === 'kids' ? '¿Cuánto mide?' : '¿Cuánto mides?'}
           </label>
-          <p class="headline mt-5 text-7xl text-yellow">
-            {height} <span class="text-3xl text-chalk">cm</span>
+          <p class="price mt-5 text-7xl">
+            {height} <span class="text-3xl">cm</span>
           </p>
           <input
             id="quiz-height"
             type="range"
-            class="mt-4 w-full accent-yellow"
+            class="mt-4 w-full accent-ink"
             min={use === 'kids' ? 90 : 145}
             max={use === 'kids' ? 165 : 200}
             value={height}
             onInput={(e) => setHeight(Number(e.currentTarget.value))}
           />
-          <p class="mt-3 text-fog" aria-live="polite">
-            Con esa estatura la talla es <strong class="text-chalk">{size}</strong>.
+          <p class="mt-3 text-steel" aria-live="polite">
+            Con esa estatura la talla es <strong class="text-ink">{size}</strong>.
           </p>
           <button
             type="button"
@@ -173,11 +173,11 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
           <label for="quiz-budget" class="headline headline-m block">
             ¿Hasta cuánto quieres invertir?
           </label>
-          <p class="headline mt-5 text-6xl text-yellow sm:text-7xl">{formatPrice(budget)}</p>
+          <p class="price mt-5 text-6xl sm:text-7xl">{formatPrice(budget)}</p>
           <input
             id="quiz-budget"
             type="range"
-            class="mt-4 w-full accent-yellow"
+            class="mt-4 w-full accent-ink"
             min={range.min}
             max={range.max}
             step={50000}
@@ -192,17 +192,17 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
 
       {step === 'result' && use && (
         <div aria-live="polite">
-          <p class="text-fog">Tu talla</p>
-          <p class="headline text-7xl text-yellow">{size}</p>
-          <p class="mt-2 max-w-[38rem] text-fog">
+          <p class="text-steel">Tu talla</p>
+          <p class="price mt-1 inline-block bg-yellow px-3 pb-1 pt-2 text-7xl">{size}</p>
+          <p class="mt-3 max-w-[38rem] text-steel">
             Es una guía según la estatura. El largo de piernas y brazos también cuenta: en la tienda te medimos y la confirmamos.
           </p>
 
           <h2 class="headline headline-m mt-8">
             {result.anyFits ? 'Estas son para ti' : 'Ninguna entra en ese presupuesto'}
           </h2>
-          {!result.anyFits && <p class="mt-2 text-fog">Estas son las que más se acercan.</p>}
-          <ul class="mt-5 grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-5 [--color-carbon-800:var(--color-carbon-900)]">
+          {!result.anyFits && <p class="mt-2 text-steel">Estas son las que más se acercan.</p>}
+          <ul class="wall -mx-5 mt-5 grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-x-6 gap-y-8 px-5 pb-8 pt-5 sm:-mx-9 sm:px-9">
             {result.list.map((b) => (
               <li key={b.id}>
                 <ProductCard
@@ -219,7 +219,7 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
                 Pedir asesoría por WhatsApp
               </a>
             )}
-            <button type="button" class="button button-dark" onClick={restart}>
+            <button type="button" class="button button-quiet" onClick={restart}>
               Empezar de nuevo
             </button>
           </div>
@@ -227,7 +227,7 @@ export default function Quiz({ bikes }: { bikes: Product[] }) {
       )}
 
       {step !== 'use' && step !== 'result' && (
-        <button type="button" class="mt-6 block py-1 text-fog underline underline-offset-2 hover:text-chalk" onClick={goBack}>
+        <button type="button" class="mt-6 block py-1 text-steel underline underline-offset-2 hover:text-ink" onClick={goBack}>
           Volver a la pregunta anterior
         </button>
       )}

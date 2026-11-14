@@ -108,12 +108,12 @@ export default function Catalog({ products }: { products: Product[] }) {
         </div>
         <div>
           <label class="field-label" for="filter-price">
-            Precio hasta <span class="text-yellow">{formatPrice(priceLimit)}</span>
+            Precio hasta <span class="price text-xl">{formatPrice(priceLimit)}</span>
           </label>
           <input
             id="filter-price"
             type="range"
-            class="mt-3 w-full accent-yellow"
+            class="mt-3 w-full accent-ink"
             min={50000}
             max={maxPrice}
             step={50000}
@@ -133,7 +133,7 @@ export default function Catalog({ products }: { products: Product[] }) {
         </div>
       </div>
 
-      <div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-fog" aria-live="polite">
+      <div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-steel" aria-live="polite">
         <p>
           {visible.length} {visible.length === 1 ? 'producto' : 'productos'}
         </p>
@@ -150,23 +150,25 @@ export default function Catalog({ products }: { products: Product[] }) {
       </div>
 
       <h2 class="sr-only">Productos</h2>
-      {visible.length ? (
-        <ul class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fill,minmax(15.5rem,1fr))] sm:gap-5">
-          {visible.map((p) => (
-            <li key={p.id}>
-              <ProductCard product={p} />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div class="plate mt-5 p-8">
-          <p class="headline headline-m">Ningún producto coincide con esos filtros.</p>
-          <p class="mt-3 text-fog">Prueba con otra palabra o sube el precio máximo.</p>
-          <button type="button" class="button mt-5" onClick={clearFilters}>
-            Quitar filtros
-          </button>
-        </div>
-      )}
+      <div class="wall mt-5 px-3 pb-8 pt-5 sm:px-8 sm:pb-12 sm:pt-8">
+        {visible.length ? (
+          <ul class="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] sm:gap-x-6 sm:gap-y-8">
+            {visible.map((p) => (
+              <li key={p.id}>
+                <ProductCard product={p} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="ticket max-w-[34rem] p-7">
+            <p class="headline headline-m">Ningún producto coincide con esos filtros.</p>
+            <p class="mt-3 text-steel">Prueba con otra palabra o sube el precio máximo.</p>
+            <button type="button" class="button mt-5" onClick={clearFilters}>
+              Quitar filtros
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

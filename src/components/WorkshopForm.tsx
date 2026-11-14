@@ -35,7 +35,7 @@ export default function WorkshopForm({ services }: { services: Service[] }) {
   };
 
   return (
-    <form onSubmit={onSubmit} class="plate grid gap-4 p-6 pb-9">
+    <form onSubmit={onSubmit} class="ticket grid gap-4 px-5 pb-7 pt-6 sm:px-8 sm:pb-9">
       <h2 class="headline headline-m">Pide tu cita</h2>
 
       <div>
@@ -84,7 +84,7 @@ export default function WorkshopForm({ services }: { services: Service[] }) {
 
       <div>
         <label class="field-label" for="appointment-note">
-          ¿Qué le pasa a la bici? <span class="font-normal text-fog">(opcional)</span>
+          ¿Qué le pasa a la bici? <span class="font-normal text-steel">(opcional)</span>
         </label>
         <textarea id="appointment-note" name="note" class="field" rows={3} placeholder="Suena al frenar, los cambios saltan…" />
       </div>
@@ -92,7 +92,7 @@ export default function WorkshopForm({ services }: { services: Service[] }) {
       <button type="submit" class="button justify-self-start">
         Pedir cita por WhatsApp
       </button>
-      <p class="text-sm text-fog" role="status">
+      <p class="text-sm text-steel" role="status">
         {sent
           ? 'Se abrió WhatsApp con tu solicitud. Envía el mensaje y te confirmamos la hora.'
           : 'Se abre WhatsApp con la solicitud ya escrita. La cita queda en firme cuando te respondemos.'}

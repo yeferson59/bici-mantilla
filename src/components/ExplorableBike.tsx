@@ -30,7 +30,8 @@ export default function ExplorableBike({ products }: { products: Product[] }) {
 
   return (
     <div class="grid items-start gap-8 lg:grid-cols-[1.3fr_1fr] lg:gap-12">
-      <div class="relative">
+      <div class="ticket relative px-3 py-6 sm:px-8 sm:py-10">
+        <div class="relative">
         <BikeSVG active={zone} className="block w-full" />
         {HOTSPOTS.map((hotspot) => (
           <button
@@ -43,21 +44,22 @@ export default function ExplorableBike({ products }: { products: Product[] }) {
             onClick={() => setZone(hotspot.zone)}
           />
         ))}
+        </div>
       </div>
 
-      <div class="plate p-6 pb-8" aria-live="polite">
-        <h3 class="headline headline-m text-yellow">{ZONE_NAME[zone]}</h3>
-        <p class="mt-3 text-fog">{BLURB[zone]}</p>
+      <div class="lg:pt-2" aria-live="polite">
+        <h3 class="headline headline-l">{ZONE_NAME[zone]}</h3>
+        <p class="mt-3 max-w-[30rem] text-steel">{BLURB[zone]}</p>
 
-        <ul class="mt-5 divide-y divide-carbon-700 border-y border-carbon-700">
+        <ul class="mt-6 divide-y divide-rule border-y-2 border-ink">
           {inZone.map((p) => (
             <li key={p.id} class="flex items-center gap-3 py-3">
-              <Illustration icon={p.icon} className="size-10 shrink-0" />
+              <Illustration icon={p.icon} className="size-11 shrink-0" />
               <div class="min-w-0 flex-1">
-                <a href={`/producto/${p.id}`} class="font-semibold leading-snug hover:text-yellow">
+                <a href={`/producto/${p.id}`} class="font-semibold leading-snug underline-offset-[0.2em] hover:underline">
                   {p.name}
                 </a>
-                <p class="text-sm text-fog">{formatPrice(p.price)}</p>
+                <p class="price text-lg">{formatPrice(p.price)}</p>
               </div>
               <button
                 type="button"
@@ -69,10 +71,10 @@ export default function ExplorableBike({ products }: { products: Product[] }) {
               </button>
             </li>
           ))}
-          {inZone.length === 0 && <li class="py-4 text-fog">Todavía no hay productos de esta zona en el catálogo.</li>}
+          {inZone.length === 0 && <li class="py-4 text-steel">Todavía no hay productos de esta zona en el catálogo.</li>}
         </ul>
 
-        <a href={`/catalogo?zone=${zone}`} class="link mt-5 inline-block">
+        <a href={`/catalogo?zone=${zone}`} class="link mt-5 inline-block font-semibold">
           Ver todo lo de {ZONE_NAME[zone].toLowerCase()} en el catálogo
         </a>
       </div>

@@ -89,7 +89,7 @@ export default function Cart({ products }: { products: ProductSummary[] }) {
         ref={openButton}
         type="button"
         onClick={() => isCartOpen.set(true)}
-        class="flex min-h-11 items-center gap-2 px-2 font-semibold hover:text-yellow"
+        class="flex min-h-11 items-center gap-2 px-2 font-semibold underline-offset-[0.35em] hover:underline"
         aria-label={`Abrir tu pedido: ${count} ${count === 1 ? 'producto' : 'productos'}`}
       >
         <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -100,7 +100,7 @@ export default function Cart({ products }: { products: ProductSummary[] }) {
         <span class="hidden sm:inline">Pedido</span>
         <span
           class={`min-w-7 -skew-x-12 px-1.5 text-center text-sm font-bold ${
-            count ? 'bg-yellow text-carbon-950' : 'bg-carbon-700 text-fog'
+            count ? 'bg-ink text-yellow' : 'bg-black/10 text-ink'
           }`}
         >
           <span class="inline-block skew-x-12">{count}</span>
@@ -120,41 +120,41 @@ export default function Cart({ products }: { products: ProductSummary[] }) {
               role="dialog"
               aria-modal="true"
               aria-label="Tu pedido"
-              class="drawer absolute inset-y-0 right-0 flex w-[min(100%,26rem)] flex-col bg-carbon-900"
+              class="drawer absolute inset-y-0 right-0 flex w-[min(100%,26rem)] flex-col bg-card"
               style={{ transform: open ? 'none' : 'translateX(100%)' }}
             >
-              <header class="flex items-center justify-between border-b border-carbon-700 px-5 py-4">
+              <header class="signboard flex items-center justify-between border-b-2 border-ink px-5 py-4">
                 <h2 class="headline headline-m">Tu pedido</h2>
-                <button ref={closeButton} type="button" onClick={close} class="min-h-11 px-2 font-semibold hover:text-yellow">
+                <button ref={closeButton} type="button" onClick={close} class="min-h-11 px-2 font-semibold underline-offset-[0.35em] hover:underline">
                   Cerrar
                 </button>
               </header>
 
               {rows.length === 0 ? (
                 <div class="flex flex-1 flex-col items-start gap-5 px-5 py-8">
-                  <p class="text-fog">Tu pedido está vacío. Agrega productos desde el catálogo y aparecerán aquí.</p>
+                  <p class="text-steel">Tu pedido está vacío. Agrega productos desde el catálogo y aparecerán aquí.</p>
                   <a href="/catalogo" class="button">
                     Ver el catálogo
                   </a>
                 </div>
               ) : (
                 <>
-                  <ul class="flex-1 divide-y divide-carbon-700 overflow-y-auto px-5">
+                  <ul class="flex-1 divide-y divide-rule overflow-y-auto px-5">
                     {rows.map((r) => {
                       const name = r.size ? `${r.product.name}, talla ${r.size}` : r.product.name;
                       return (
                       <li key={`${r.id}/${r.size ?? ''}`} class="flex gap-3 py-4">
-                        <div class="grid size-16 shrink-0 place-items-center bg-carbon-950">
+                        <div class="grid size-16 shrink-0 place-items-center bg-paper">
                           <Illustration icon={r.product.icon} className="size-10" />
                         </div>
                         <div class="min-w-0 flex-1">
                           <p class="font-semibold leading-snug">{r.product.name}</p>
-                          {r.size && <p class="text-sm text-fog">Talla {r.size}</p>}
+                          {r.size && <p class="text-sm text-steel">Talla {r.size}</p>}
                           <div class="mt-2 flex items-center justify-between gap-2">
-                            <div class="flex items-center bg-carbon-800">
+                            <div class="flex items-center border border-rule">
                               <button
                                 type="button"
-                                class="size-9 text-lg hover:bg-carbon-700"
+                                class="size-9 text-lg hover:bg-paper"
                                 onClick={() => changeQuantity(r.id, r.size, -1)}
                                 aria-label={`Quitar una unidad de ${name}`}
                               >
@@ -165,18 +165,18 @@ export default function Cart({ products }: { products: ProductSummary[] }) {
                               </span>
                               <button
                                 type="button"
-                                class="size-9 text-lg hover:bg-carbon-700"
+                                class="size-9 text-lg hover:bg-paper"
                                 onClick={() => changeQuantity(r.id, r.size, 1)}
                                 aria-label={`Agregar una unidad de ${name}`}
                               >
                                 +
                               </button>
                             </div>
-                            <p class="font-semibold">{formatPrice(r.product.price * r.quantity)}</p>
+                            <p class="price text-xl">{formatPrice(r.product.price * r.quantity)}</p>
                           </div>
                           <button
                             type="button"
-                            class="mt-1 py-1 text-sm text-fog underline underline-offset-2 hover:text-chalk"
+                            class="mt-1 py-1 text-sm text-steel underline underline-offset-2 hover:text-ink"
                             onClick={() => removeFromCart(r.id, r.size)}
                             aria-label={`Quitar ${name} del pedido`}
                           >
@@ -188,20 +188,20 @@ export default function Cart({ products }: { products: ProductSummary[] }) {
                     })}
                   </ul>
 
-                  <footer class="border-t border-carbon-700 px-5 py-5">
+                  <footer class="border-t-2 border-ink px-5 py-5">
                     <div class="flex items-baseline justify-between">
-                      <p class="text-fog">Total</p>
-                      <p class="headline text-3xl">{formatPrice(total)}</p>
+                      <p class="font-semibold">Total</p>
+                      <p class="price text-4xl">{formatPrice(total)}</p>
                     </div>
                     <a href={orderLink} target="_blank" rel="noopener" class="button mt-4 w-full">
                       Enviar pedido por WhatsApp
                     </a>
-                    <p class="mt-3 text-sm text-fog">
+                    <p class="mt-3 text-sm text-steel">
                       Se abre WhatsApp con tu pedido ya escrito. Ahí confirmamos disponibilidad, pago y entrega.
                     </p>
                     <button
                       type="button"
-                      class="mt-3 py-1 text-sm text-fog underline underline-offset-2 hover:text-chalk"
+                      class="mt-3 py-1 text-sm text-steel underline underline-offset-2 hover:text-ink"
                       onClick={clearCart}
                     >
                       Vaciar pedido

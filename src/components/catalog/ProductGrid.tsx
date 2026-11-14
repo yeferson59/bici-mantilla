@@ -1,13 +1,19 @@
 import type { Product } from '../../lib/types';
 import ProductCard from './ProductCard';
 
-/** Card grid to use as an island from Astro pages. */
-export default function ProductGrid({ products }: { products: Product[] }) {
+/** Grid of hanging tags, to use as an island from Astro pages. Put it on a `.wall`. */
+export default function ProductGrid({
+  products,
+  highlightFeatured = true,
+}: {
+  products: Product[];
+  highlightFeatured?: boolean;
+}) {
   return (
-    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fill,minmax(15.5rem,1fr))] sm:gap-5">
+    <ul class="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] sm:gap-x-6 sm:gap-y-8">
       {products.map((p) => (
         <li key={p.id}>
-          <ProductCard product={p} />
+          <ProductCard product={p} highlightFeatured={highlightFeatured} />
         </li>
       ))}
     </ul>

@@ -33,28 +33,32 @@ const related = products
 
 <Base title={product.name} description={product.description}>
   <div class="wrapper pt-8">
-    <nav aria-label="Ruta" class="text-fog">
-      <a href="/catalogo" class="hover:text-yellow">Catálogo</a>
+    <nav aria-label="Ruta" class="text-steel">
+      <a href="/catalogo" class="underline-offset-[0.2em] hover:text-ink hover:underline">Catálogo</a>
       <span aria-hidden="true"> / </span>
-      <a href={`/catalogo?category=${product.category}`} class="hover:text-yellow">{CATEGORY_NAME[product.category]}</a>
+      <a href={`/catalogo?category=${product.category}`} class="underline-offset-[0.2em] hover:text-ink hover:underline">{CATEGORY_NAME[product.category]}</a>
     </nav>
 
     <div class="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-14">
-      <div class="plate hex-bg relative grid aspect-[4/3] place-items-center bg-carbon-950 [--cut:2rem]">
-        {product.featured && <span class="stripe absolute left-6 top-6"><i></i><i></i><i></i></span>}
-        <Illustration icon={product.icon} className="w-1/2" />
+      <div class="wall px-6 pb-10 pt-6 sm:px-14 sm:pb-14 sm:pt-10">
+        <div class="tag-hook mx-auto h-auto max-w-[30rem] -rotate-1 pt-9 [&::before]:h-12">
+          <div class={`tag grid aspect-[4/3] h-auto place-items-center pt-6 [--corner:2.25rem] ${product.featured ? 'tag-featured' : ''}`}>
+            <Illustration icon={product.icon} className="w-1/2" />
+          </div>
+        </div>
       </div>
 
       <div>
         <h1 class="headline headline-l">{product.name}</h1>
-        <p class="headline mt-4 text-5xl text-yellow">{formatPrice(product.price)}</p>
-        <p class="mt-5 max-w-[34rem] text-lg text-fog">{product.description}</p>
+        <p class="price mt-5 text-6xl">{formatPrice(product.price)}</p>
+        {product.featured && <p class="mt-2 font-semibold">Destacado de la tienda</p>}
+        <p class="mt-5 max-w-[34rem] text-lg text-steel">{product.description}</p>
 
-        <dl class="mt-6 grid max-w-[30rem] grid-cols-[auto_1fr] gap-x-6 gap-y-1 border-y border-carbon-700 py-4">
+        <dl class="mt-6 grid max-w-[30rem] grid-cols-[auto_1fr] gap-x-6 gap-y-1 border-y border-rule py-4">
           {
             specs.map((d) => (
               <>
-                <dt class="text-fog">{d.term}</dt>
+                <dt class="text-steel">{d.term}</dt>
                 <dd class="font-semibold">{d.value}</dd>
               </>
             ))
@@ -71,7 +75,7 @@ const related = products
       related.length > 0 && (
         <section class="pt-20" aria-labelledby="related-title">
           <h2 id="related-title" class="headline headline-m">Más en {CATEGORY_NAME[product.category].toLowerCase()}</h2>
-          <div class="mt-6">
+          <div class="wall mt-6 px-3 pb-8 pt-5 sm:px-8 sm:pb-12 sm:pt-8">
             <ProductGrid client:visible products={related} />
           </div>
         </section>

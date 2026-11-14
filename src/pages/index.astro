@@ -34,14 +34,14 @@ const location = [shop.address, shop.city].filter(Boolean).join(', ');
 
   <section class="wrapper pt-20" aria-labelledby="categories-title">
     <h2 id="categories-title" class="headline headline-l">Lo que hay en la tienda</h2>
-    <ul class="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <ul class="mt-9 grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4">
       {
         categories.map((c) => (
           <li>
-            <a href={`/catalogo?category=${c.id}`} class="plate group flex h-full flex-col p-5 pb-7 hover:bg-carbon-700">
-              <Illustration icon={c.icon} className="size-16 sm:size-20" />
-              <span class="headline headline-m mt-6 group-hover:text-yellow">{c.name}</span>
-              <span class="mt-1 text-fog">{c.count} productos</span>
+            <a href={`/catalogo?category=${c.id}`} class="group flex h-full flex-col border-t-4 border-ink pt-5">
+              <Illustration icon={c.icon} className="size-14 sm:size-16" />
+              <span class="headline headline-m mt-5 decoration-2 underline-offset-[0.15em] group-hover:underline">{c.name}</span>
+              <span class="mt-1 text-steel">{c.count} productos</span>
             </a>
           </li>
         ))
@@ -49,57 +49,60 @@ const location = [shop.address, shop.city].filter(Boolean).join(', ');
     </ul>
   </section>
 
-  <section class="wrapper pt-24" aria-labelledby="featured-title">
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <h2 id="featured-title" class="headline headline-l">Destacados</h2>
-      <a href="/catalogo" class="link">Ver todo el catálogo</a>
-    </div>
-    <div class="mt-8">
-      <ProductGrid client:visible products={featured} />
+  <section class="wall mt-24 py-14 sm:py-20" aria-labelledby="featured-title">
+    <div class="wrapper">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <h2 id="featured-title" class="headline headline-l">Destacados</h2>
+        <a href="/catalogo" class="link font-semibold">Ver todo el catálogo</a>
+      </div>
+      <div class="mt-10">
+        <ProductGrid client:visible products={featured} highlightFeatured={false} />
+      </div>
     </div>
   </section>
 
   <section class="wrapper pt-24" aria-labelledby="explorable-title">
-    <h2 id="explorable-title" class="headline headline-l">Toca la bici, encuentra el repuesto</h2>
-    <p class="mt-4 max-w-[38rem] text-lg text-fog">
-      Cada punto amarillo es una parte de la bicicleta. Tócalo y mira los repuestos y accesorios que van ahí.
+    <h2 id="explorable-title" class="headline headline-l max-w-[44rem]">Toca la bici, encuentra el repuesto</h2>
+    <p class="mt-4 max-w-[38rem] text-lg text-steel">
+      Cada punto es una parte de la bicicleta. Tócalo y mira los repuestos y accesorios que van ahí.
     </p>
     <div class="mt-10">
       <ExplorableBike client:visible products={withZone} />
     </div>
   </section>
 
-  <section class="hex-bg mt-24 bg-yellow text-carbon-950" aria-labelledby="quiz-title">
-    <div class="wrapper flex flex-wrap items-center justify-between gap-8 py-14">
+  <section class="hex-bg mt-24 bg-ink text-card" aria-labelledby="quiz-title">
+    <div class="wrapper flex flex-wrap items-center justify-between gap-8 py-16">
       <div>
         <h2 id="quiz-title" class="headline headline-l">¿No sabes cuál es la tuya?</h2>
-        <p class="mt-3 max-w-[34rem] text-lg font-medium">
+        <p class="mt-3 max-w-[34rem] text-lg text-night-text">
           Responde cuatro preguntas y te decimos qué bici buscar y en qué talla.
         </p>
       </div>
-      <a href="/encuentra-tu-bici" class="button bg-carbon-950 text-chalk hover:bg-carbon-700 focus-visible:outline-yellow">
+      <a href="/encuentra-tu-bici" class="button bg-yellow text-ink hover:bg-card focus-visible:outline-ink">
         Encuentra tu bici
       </a>
     </div>
   </section>
 
-  <section class="wrapper grid gap-10 pt-24 lg:grid-cols-[1fr_1.2fr] lg:gap-16" aria-labelledby="workshop-title">
+  <section class="wrapper grid items-start gap-10 pt-24 lg:grid-cols-[1fr_1.2fr] lg:gap-16" aria-labelledby="workshop-title">
     <div>
       <h2 id="workshop-title" class="headline headline-l">Taller</h2>
-      <p class="mt-4 max-w-[30rem] text-lg text-fog">
+      <p class="mt-4 max-w-[30rem] text-lg text-steel">
         Ajustes, mantenimiento y armado. Pide la cita desde aquí y llega con la bici a la hora acordada.
       </p>
       <a href="/taller" class="button mt-7">Pedir cita en el taller</a>
     </div>
-    <ul class="divide-y divide-carbon-700 border-y border-carbon-700">
+    <ul class="ticket divide-y divide-rule px-5 sm:px-7">
       {
         mainServices.map((s) => (
-          <li class="flex items-baseline justify-between gap-6 py-4">
-            <div>
-              <p class="text-lg font-semibold">{s.name}</p>
-              <p class="text-fog">{s.description}</p>
+          <li class="py-5">
+            <div class="flex items-baseline gap-3">
+              <p class="text-lg font-semibold leading-snug">{s.name}</p>
+              <span class="leader" aria-hidden="true" />
+              <p class="price shrink-0 text-2xl">{formatPrice(s.price)}</p>
             </div>
-            <p class="headline shrink-0 text-2xl">{formatPrice(s.price)}</p>
+            <p class="mt-1 text-steel">{s.description}</p>
           </li>
         ))
       }
@@ -108,16 +111,16 @@ const location = [shop.address, shop.city].filter(Boolean).join(', ');
 
   <section class="wrapper pt-24" aria-labelledby="contact-title">
     <h2 id="contact-title" class="headline headline-l">Escríbenos</h2>
-    <p class="mt-4 max-w-[34rem] text-lg text-fog">
+    <p class="mt-4 max-w-[34rem] text-lg text-steel">
       Para pedidos, repuestos que no ves en el catálogo o cualquier duda sobre tu bici.
     </p>
-    <div class="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
+    <div class="mt-8 flex flex-wrap items-center gap-x-10 gap-y-5">
+      <p class="price text-[clamp(3rem,9vw,6rem)]">{shop.displayPhone}</p>
       <a href={greetingLink} target="_blank" rel="noopener" class="button">Escribir por WhatsApp</a>
-      <p class="headline text-3xl">{shop.displayPhone}</p>
     </div>
     {
       (location || shop.mapUrl) && (
-        <p class="mt-6 text-lg">
+        <p class="mt-8 text-lg">
           {location}
           {shop.mapUrl && (
             <>
@@ -130,7 +133,7 @@ const location = [shop.address, shop.city].filter(Boolean).join(', ');
     }
     {
       shop.openingHours.length > 0 && (
-        <ul class="mt-3 text-fog">
+        <ul class="mt-2 text-steel">
           {shop.openingHours.map((h) => <li>{h.days}: {h.hours}</li>)}
         </ul>
       )

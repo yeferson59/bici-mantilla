@@ -1,16 +1,17 @@
 /**
  * The hero's 3D scene. Everything is built in code from simple shapes:
- * the white bike, the yellow rider with a red helmet and a hexagon floor like the one on the business card.
+ * the black bike, the red rider with a black helmet and a yellow hexagon floor like the one on the business card.
  */
 import * as THREE from 'three';
 import { BIKE, BODY, DISTANCE_PER_REV, TIMING, cadence, clamp, computePose, smoothstep, type Pose } from './pose';
 
 const COLOR = {
-  background: 0x19191b,
+  background: 0xffe600, // the hero is a yellow sign: the fog melts into it
   yellow: 0xffe600,
   red: 0xe2222c,
   white: 0xf4f4f0,
-  metal: 0x9c9ca3,
+  ink: 0x161616,
+  metal: 0x6f726c,
 };
 
 const UP = new THREE.Vector3(0, 1, 0);
@@ -69,10 +70,10 @@ function createWheel(mat: THREE.Material, spokeMat: THREE.Material, accentMat: T
 
 function createBike() {
   const group = new THREE.Group();
-  const frame = material(COLOR.white, { roughness: 0.4, metalness: 0.25 });
+  const frame = material(COLOR.ink, { roughness: 0.4, metalness: 0.25 });
   const metal = material(COLOR.metal, { roughness: 0.45, metalness: 0.5 });
   const red = material(COLOR.red);
-  const yellow = material(COLOR.yellow);
+  const yellow = material(COLOR.white); // chainring and reflectors: white reads on the yellow floor
   const b = BIKE;
 
   const topTubeEnd = new V(0.415, 0.865, 0);
@@ -148,8 +149,8 @@ function createBike() {
 
 function createRider() {
   const group = new THREE.Group();
-  const skin = material(COLOR.yellow, { roughness: 0.55 });
-  const red = material(COLOR.red, { roughness: 0.4 });
+  const skin = material(COLOR.red, { roughness: 0.55 });
+  const red = material(COLOR.ink, { roughness: 0.4 }); // helmet
   const white = material(COLOR.white);
 
   const capsule = (radius: number, length: number, mat: THREE.Material = skin) => {
@@ -256,8 +257,8 @@ function createGround() {
       matrix.makeTranslation(x, -0.01, z);
       tiles.setMatrixAt(n, matrix);
       const tone = pseudoRandom(c % 4, f);
-      const gray = tone > 0.9 ? 0.2 : 0.105 + tone * 0.055;
-      color.setRGB(gray, gray, gray * 1.03, THREE.SRGBColorSpace);
+      const shade = tone > 0.9 ? 0.86 : 0.955 + tone * 0.045;
+      color.setRGB(shade, 0.902 * shade, 0, THREE.SRGBColorSpace);
       tiles.setColorAt(n, color);
       n++;
     }
@@ -266,7 +267,7 @@ function createGround() {
 
   const base = new THREE.Mesh(
     new THREE.PlaneGeometry(cols * spacing + 4, rows * rowZ + 4),
-    new THREE.MeshBasicMaterial({ color: 0x111112 }),
+    new THREE.MeshBasicMaterial({ color: 0xc9b500 }),
   );
   base.rotation.x = -Math.PI / 2;
   base.position.set(0, -0.025, (rows / 2 - 15) * rowZ);
@@ -276,7 +277,7 @@ function createGround() {
   const dashes = Math.floor((cols * spacing) / 2.4);
   const laneLine = new THREE.InstancedMesh(
     new THREE.BoxGeometry(1.1, 0.012, 0.07),
-    new THREE.MeshBasicMaterial({ color: 0x3f3f44 }),
+    new THREE.MeshBasicMaterial({ color: 0xa89600 }),
     dashes,
   );
   for (let i = 0; i < dashes; i++) {
@@ -308,7 +309,7 @@ function createSpeedLines() {
     factor: 0.7 + pseudoRandom(i, 5) * 0.8,
   }));
   const color = new THREE.Color();
-  streaks.forEach((_, i) => mesh.setColorAt(i, color.set(i % 3 === 0 ? COLOR.yellow : COLOR.white)));
+  streaks.forEach((_, i) => mesh.setColorAt(i, color.set(i % 3 === 0 ? COLOR.red : COLOR.ink)));
   const matrix = new THREE.Matrix4();
   const scale = new V();
   const position = new V();
@@ -316,7 +317,7 @@ function createSpeedLines() {
   return {
     mesh,
     apply(distance: number, speed: number) {
-      mat.opacity = 0.55 * speed * speed;
+      mat.opacity = 0.45 * speed * speed;
       mesh.visible = mat.opacity > 0.01;
       if (!mesh.visible) return;
       streaks.forEach((d, i) => {
@@ -379,7 +380,7 @@ export function createScene(canvas: HTMLCanvasElement): HeroScene {
   const TAN = Math.tan(THREE.MathUtils.degToRad(FOV / 2));
   const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 80);
 
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x2a2a30, 1.25));
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7d20, 1.25));
   const sun = new THREE.DirectionalLight(0xffffff, 2.4);
   sun.position.set(3, 6, 5);
   const backLight = new THREE.DirectionalLight(0xfff2a0, 1.3);
