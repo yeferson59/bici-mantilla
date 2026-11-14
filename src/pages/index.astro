@@ -26,6 +26,7 @@ const featured = products.filter((p) => p.featured);
 const withZone = products.filter((p) => p.zone);
 const mainServices = services.slice(0, 3);
 const greetingLink = whatsAppLink(`Hola ${shop.name}, vengo de la página web.`);
+const location = [shop.address, shop.city].filter(Boolean).join(', ');
 ---
 
 <Base>
@@ -115,12 +116,12 @@ const greetingLink = whatsAppLink(`Hola ${shop.name}, vengo de la página web.`)
       <p class="headline text-3xl">{shop.displayPhone}</p>
     </div>
     {
-      shop.address && (
+      (location || shop.mapUrl) && (
         <p class="mt-6 text-lg">
-          {[shop.address, shop.city].filter(Boolean).join(', ')}
+          {location}
           {shop.mapUrl && (
             <>
-              {' '}
+              {location && ' '}
               <a href={shop.mapUrl} target="_blank" rel="noopener" class="link">Cómo llegar</a>
             </>
           )}

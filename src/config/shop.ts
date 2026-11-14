@@ -25,12 +25,10 @@ export const shop = {
     },
   ],
 
-  address: null as string | null,
-  city: null as string | null,
-  /** Google Maps link to the shop. */
-  mapUrl: null as string | null,
-  /** Example: [{ days: 'Lunes a sábado', hours: '8:00 a. m. – 6:30 p. m.' }] */
-  openingHours: [] as { days: string; hours: string }[],
+  address: "Calle 8 #5-25",
+  city: "Pamplona, Colombia",
+  mapUrl: "https://maps.app.goo.gl/URLu2sGa9vLdEVd16",
+  openingHours: [{ days: "Lunes a Sábado", hours: "9:00 am - 7:00 pm" }],
 
   /** While the catalog is a sample, the site says so in the footer. */
   sampleCatalog: true,

@@ -31,9 +31,15 @@ const businessData = {
   name: shop.name,
   description: shop.description,
   telephone: `+${shop.whatsapp}`,
-  ...(shop.address && {
-    address: { '@type': 'PostalAddress', streetAddress: shop.address, addressLocality: shop.city ?? undefined, addressCountry: 'CO' },
+  ...((shop.address || shop.city) && {
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: shop.address ?? undefined,
+      addressLocality: shop.city ?? undefined,
+      addressCountry: 'CO',
+    },
   }),
+  ...(shop.mapUrl && { hasMap: shop.mapUrl }),
   sameAs: shop.socials.flatMap((s) => (s.url ? [s.url] : [])),
 };
 ---
@@ -129,7 +135,14 @@ const businessData = {
                 </li>
               ))
             }
-            {shop.address && <li>{[shop.address, shop.city].filter(Boolean).join(', ')}</li>}
+            {(shop.address || shop.city) && <li>{[shop.address, shop.city].filter(Boolean).join(', ')}</li>}
+            {
+              shop.mapUrl && (
+                <li>
+                  <a href={shop.mapUrl} target="_blank" rel="noopener" class="link">Cómo llegar</a>
+                </li>
+              )
+            }
             {shop.openingHours.map((h) => <li>{h.days}: {h.hours}</li>)}
           </ul>
         </div>
